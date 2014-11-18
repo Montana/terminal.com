@@ -372,7 +372,7 @@ module Terminal
       raise "Unexpected status: #{response.inspect}"
     end
 
-    def ensure_options_validity(options, valid_keys)
+    def ensure_options_validity(options, *valid_keys)
       unrecognised_options = (options.keys - valid_keys)
 
       unless unrecognised_options.empty?
