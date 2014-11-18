@@ -21,10 +21,12 @@ require 'terminal.com'
 
 # Let's search featured ruby-related snapshots.
 Terminal::API.list_public_snapshots(tag: 'ruby', featured: true)
+# {"snapshots" => [{"title" => "JRuby Stack (example included)", "body" => "JRuby is a 100% Java implementation of the Ruby programming language. This snapshot also includes a working example, its source code and the tools needed to develop JRuby applications.", ...
 
 # List your Terminals.
 my_user_token = '...'
 my_access_token = '...'
 
 Terminal::API.list_terminals(my_user_token, my_access_token)
+# {"terminals" => [{"cpu" => "2 (max)", "ram" => "256", "diskspace" => "10", "name" => "Coding Interview: John Doe Jr", ...
 ```
