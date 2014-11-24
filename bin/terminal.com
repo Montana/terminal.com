@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
-# TODO: Not every endpoint requires authentication.
-
 require File.expand_path('../../lib/terminal.com', __FILE__)
+
+# TODO: Don't force tokens for methods that don't need them.
 
 def usage
   <<-EOF
@@ -67,5 +67,13 @@ else
     abort usage
   end
 
-  puts Terminal::API.send(command, user_token, access_token, *ARGV)
+  # Not every method requires authentication.
+  method_args = Terminal::API.method(command).parameters.map(&:last)
+
+  arguments = []
+  arguments << user_token if method_args.include?(:user_token)
+  arguments << access_token if method_args.include?(:access_token)
+  arguments.push(*ARGV)
+
+  puts Terminal::API.send(command, *arguments)
 end
