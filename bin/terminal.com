@@ -82,7 +82,8 @@ get_authorized_keys_from_ssh_proxy user_token, access_token
 
 # OTHER #
 who_am_i user_token, access_token
-request_progress request_id   EOF
+request_progress request_id
+  EOF
 end
 
 # -h | --help
