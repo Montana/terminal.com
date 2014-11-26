@@ -1,6 +1,6 @@
 # About
 
-This is a Ruby wrapper for [Terminal.com](https://www.terminal.com) API.
+This is a Ruby wrapper for [Terminal.com](https://www.terminal.com) API. Works on Ruby 2, Ruby 1.8 or 1.9 are not supported.
 
 At the moment all it does is to dump all the [Terminal.com API endpoints](https://www.terminal.com/api/docs) to `Terminal::API` module, from which you can call them pretty much the same way you'd do with curl, just from Ruby.
 

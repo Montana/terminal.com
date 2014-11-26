@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.require_paths = ['lib']
   s.executables = 'terminal.com'
+  s.required_ruby_version = '~> 2'
 
   # This is only for bin/terminal.com. With this,
   # you get syntax JSON highlighting on console.
