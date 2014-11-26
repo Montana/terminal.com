@@ -14,6 +14,32 @@ In the future there will be more object-oriented abstraction.
 
 ![](docs/terminal-com-api-keys.png)
 
+# Command-Line Client
+
+Anything you can do from the library can be done through the CLI client. There are two ways how you can use it.
+
+## Without Configuration
+
+```bash
+terminal.com [user_token] [access_token] list_terminals
+```
+
+*Note that at the point you have to provide both `user_token` and `access_token` regardless of whether the API endpoint actually needs it. This will be fixed in near future!*
+
+## With Configuration
+
+Specifying the credentials every single time can be quite tedious. That's where `terminal.com configure` comes in handy:
+
+![](docs/terminal-com-configure.png)
+
+```bash
+# One time only.
+terminal.com configure
+
+# Now you can simply do:
+terminal.com list_terminals
+```
+
 # Example
 
 ```ruby
