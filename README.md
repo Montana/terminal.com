@@ -40,6 +40,12 @@ terminal.com configure
 terminal.com list_terminals
 ```
 
+## Options
+
+```bash
+terminal.com list_public_snapshots --tag=ruby --featured
+```
+
 # Example
 
 ```ruby
