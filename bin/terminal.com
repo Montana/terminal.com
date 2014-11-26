@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 
-require File.expand_path('../../lib/terminal.com', __FILE__)
-require 'json'
-require 'coderay'
-
 # TODO (later): Don't force tokens for methods that don't need them.
 # TODO (maybe): DBG=ruby/curl/off. Curl would output curl commands.
+
+############
+# Helpers. #
+############
 
 def log(message)
   STDERR.puts("\x1B[1;30m~ #{message}\x1B[0m") unless ENV['DBG'] == 'off'
@@ -18,9 +18,15 @@ def dbg(command, arguments, **options)
     ")\n"
 end
 
+def try_highlight_syntax(json)
+  CodeRay.scan(json, :json).term
+rescue
+  json
+end
+
 def print_as_json(data)
   json = JSON.pretty_generate(data)
-  puts CodeRay.scan(json, :json).term
+  puts try_highlight_syntax(json)
 end
 
 def api_call(command, arguments, options)
@@ -39,6 +45,19 @@ end
 
 def usage
   DATA.read
+end
+
+#########
+# Main. #
+#########
+
+require File.expand_path('../../lib/terminal.com', __FILE__)
+require 'json'
+
+begin
+  require 'coderay'
+rescue LoadError
+  log "CodeRay is not installed. Syntax highlighting won't be available."
 end
 
 # -h | --help
