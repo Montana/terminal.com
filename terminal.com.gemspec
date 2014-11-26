@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.summary = "The official Terminal.com Ruby + CLI client"
   s.description = "#{s.summary}."
   s.email = 'james@cloudlabs.io'
-  s.files = ['README.md', 'bin/terminal.com', *Dir.glob('**/*.rb')]
+  s.files = ['README.md', 'bin/terminal.com', 'docs/help.txt', *Dir.glob('**/*.rb')]
   s.license = 'MIT'
   s.require_paths = ['lib']
   s.executables = 'terminal.com'
