@@ -2,9 +2,40 @@
 
 require File.expand_path('../../lib/terminal.com', __FILE__)
 require 'json'
+require 'coderay'
 
 # TODO (later): Don't force tokens for methods that don't need them.
-# TODO: terminal.com configure -> ask for the credentials and save them.
+# TODO (maybe): DBG=ruby/curl/off. Curl would output curl commands.
+
+def log(message)
+  STDERR.puts("\x1B[1;30m~ #{message}\x1B[0m") unless ENV['DBG'] == 'off'
+end
+
+def dbg(command, arguments, **options)
+  log "Terminal::API.#{command}(" +
+    ("#{arguments.inspect[1..-2]}" unless arguments.empty?).to_s +
+    (", #{options.inspect[1..-2]}" unless options.empty?).to_s +
+    ")\n"
+end
+
+def print_as_json(data)
+  json = JSON.pretty_generate(data)
+  puts CodeRay.scan(json, :json).term
+end
+
+def api_call(command, arguments, options)
+  # Ruby **args expansion doesn't work as I expected, that's why the extra if.
+  # pry(main)> def xxx(*args) args; end
+  # pry(main)> xxx(**{})
+  # => [{}]
+  if options
+    dbg command, arguments, options
+    print_as_json Terminal::API.send(command, *arguments, **options)
+  else
+    dbg command, arguments
+    print_as_json Terminal::API.send(command, *arguments)
+  end
+end
 
 def usage
   DATA.read
@@ -81,18 +112,17 @@ else
   if method_args.include?(:options)
     options = ARGV.reduce(Hash.new) do |buffer, argument|
       if argument.match(/^--(.+)=(.+)$/)
-        ARGV.delete(argument)
         buffer[$1.to_sym] = $2
       elsif argument.match(/^--no-(.+)$/)
-        ARGV.delete(argument)
         buffer[$1.to_sym] = false
       elsif argument.match(/^--(.+)$/)
-        ARGV.delete(argument)
         buffer[$1.to_sym] = true
       end
 
       buffer
     end
+
+    ARGV.delete_if { |argument| argument.start_with?('--') }
   end
 
   arguments = []
@@ -100,17 +130,7 @@ else
   arguments << access_token if method_args.include?(:access_token)
   arguments.push(*ARGV)
 
-  # Ruby **args expansion doesn't work as I expected, that's why the extra if.
-  # pry(main)> def xxx(*args) args; end
-  # pry(main)> xxx(**{})
-  # => [{}]
-  if options
-    STDERR.puts("~ Terminal::API.#{command}(*#{arguments.inspect}, **#{options.inspect})\n\n")
-    puts Terminal::API.send(command, *arguments, **options)
-  else
-    STDERR.puts("~ Terminal::API.#{command}(*#{arguments.inspect})\n\n")
-    puts Terminal::API.send(command, *arguments)
-  end
+  api_call(command, arguments, options)
 end
 
 __END__
@@ -161,7 +181,7 @@ get_terminal user_token access_token [options]
 start_snapshot user_token access_token snapshot_id [options]
   --cpu=value
   --ram=value
-  --temporary=value
+  --temporary
   --name=value
   --autopause=value
   --startup_script=value
