@@ -18,6 +18,8 @@ In the future there will be more object-oriented abstraction.
 
 Anything you can do from the library can be done through the CLI client. There are two ways how you can use it.
 
+![](docs/terminal-cli-client.png)
+
 ## Without Configuration
 
 ```bash
