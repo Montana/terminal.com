@@ -7,19 +7,92 @@ require File.expand_path('../../lib/terminal.com', __FILE__)
 # TODO: Support booleans --featured --no-featured.
 
 def usage
-  <<-EOF
+  DATA.read
+end
+
+# -h | --help
+if ARGV.include?('-h') || ARGV.include?('--help')
+  puts usage; exit
+end
+
+# Tokens.
+# TODO: Add --no-config
+if File.exist?(File.expand_path('~/.terminal.com.json'))
+  config = JSON.parse(File.read(File.expand_path('~/.terminal.com.json')))
+  user_token, access_token = config.values_at('user_token', 'access_token')
+
+  if user_token.nil?
+    abort("Config file found, but user_token is missing. Add user_token key.")
+  end
+
+  if access_token.nil?
+    abort("Config file found, but access_token is missing. Add access_token key.")
+  end
+else
+  user_token, access_token = ARGV.shift(2)
+
+  if user_token.nil? || access_token.nil?
+    STDERR.puts("Credentials missing.\n\n")
+    abort usage
+  end
+end
+
+if ARGV.empty?
+  STDERR.puts("Command missing.\n\n")
+  abort usage
+else
+  command = ARGV.shift
+
+  unless Terminal::API.respond_to?(command)
+    STDERR.puts("Invalid command '#{command}'.\n\n")
+    abort usage
+  end
+
+  # Not every method requires authentication.
+  method_args = Terminal::API.method(command).parameters.map(&:last)
+
+  if method_args.include?(:options)
+    options = ARGV.reduce(Hash.new) do |buffer, argument|
+      if argument.match(/^--(.+)=(.+)$/)
+        ARGV.delete(argument)
+        buffer[$1.to_sym] = $2
+      end
+
+      buffer
+    end
+  end
+
+  arguments = []
+  arguments << user_token if method_args.include?(:user_token)
+  arguments << access_token if method_args.include?(:access_token)
+  arguments.push(*ARGV)
+
+  # Ruby **args expansion doesn't work as I expected, that's why the extra if.
+  # pry(main)> def xxx(*args) args; end
+  # pry(main)> xxx(**{})
+  # => [{}]
+  if options
+    STDERR.puts("~ Terminal::API.#{command}(*#{arguments.inspect}, **#{options.inspect})\n\n")
+    puts Terminal::API.send(command, *arguments, **options)
+  else
+    STDERR.puts("~ Terminal::API.#{command}(*#{arguments.inspect})\n\n")
+    puts Terminal::API.send(command, *arguments)
+  end
+end
+
+__END__
 == Usage ==
 
 1. Explicit configuration.
 
-#{$0} [user_token] [access_token] [command]
+terminal.com [user_token] [access_token] [command]
 
 2. With a configuration file.
 
 ~/.terminal.com.json
 {"user_token": "...", "access_token": "..."}
 
-#{$0} [command]
+terminal.com [command]
 
 == Commands ==
 
@@ -136,75 +209,3 @@ get_authorized_keys_from_ssh_proxy user_token access_token
 # OTHER #
 who_am_i user_token, access_token
 request_progress request_id
-  EOF
-end
-
-# -h | --help
-if ARGV.include?('-h') || ARGV.include?('--help')
-  puts usage; exit
-end
-
-# Tokens.
-# TODO: Add --no-config
-if File.exist?(File.expand_path('~/.terminal.com.json'))
-  config = JSON.parse(File.read(File.expand_path('~/.terminal.com.json')))
-  user_token, access_token = config.values_at('user_token', 'access_token')
-
-  if user_token.nil?
-    abort("Config file found, but user_token is missing. Add user_token key.")
-  end
-
-  if access_token.nil?
-    abort("Config file found, but access_token is missing. Add access_token key.")
-  end
-else
-  user_token, access_token = ARGV.shift(2)
-
-  if user_token.nil? || access_token.nil?
-    STDERR.puts("Credentials missing.\n\n")
-    abort usage
-  end
-end
-
-if ARGV.empty?
-  STDERR.puts("Command missing.\n\n")
-  abort usage
-else
-  command = ARGV.shift
-
-  unless Terminal::API.respond_to?(command)
-    STDERR.puts("Invalid command '#{command}'.\n\n")
-    abort usage
-  end
-
-  # Not every method requires authentication.
-  method_args = Terminal::API.method(command).parameters.map(&:last)
-
-  if method_args.include?(:options)
-    options = ARGV.reduce(Hash.new) do |buffer, argument|
-      if argument.match(/^--(.+)=(.+)$/)
-        ARGV.delete(argument)
-        buffer[$1.to_sym] = $2
-      end
-
-      buffer
-    end
-  end
-
-  arguments = []
-  arguments << user_token if method_args.include?(:user_token)
-  arguments << access_token if method_args.include?(:access_token)
-  arguments.push(*ARGV)
-
-  # Ruby **args expansion doesn't work as I expected, that's why the extra if.
-  # pry(main)> def xxx(*args) args; end
-  # pry(main)> xxx(**{})
-  # => [{}]
-  if options
-    STDERR.puts("~ Terminal::API.#{command}(*#{arguments.inspect}, **#{options.inspect})\n\n")
-    puts Terminal::API.send(command, *arguments, **options)
-  else
-    STDERR.puts("~ Terminal::API.#{command}(*#{arguments.inspect})\n\n")
-    puts Terminal::API.send(command, *arguments)
-  end
-end
