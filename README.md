@@ -8,7 +8,7 @@ In the future there will be more object-oriented abstraction.
 
 # Usage
 
-1. Run `gem install terminal.com` or put `gem 'terminal.com'` into your Gemfile and run `bundle`.
+1. Run `gem install terminal.com --development` or put `gem 'terminal.com'` into your Gemfile and run `bundle`. The development option installs coderay, so you get syntax highlighting for JSON on console when using the command-line client.
 
 2. Get your `user_token` and `access_token` from [your settings](https://www.terminal.com/settings/api).
 
