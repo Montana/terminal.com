@@ -2,6 +2,8 @@ require 'net/http'
 require 'json'
 
 module Terminal
+  VERSION = '0.0.1'
+
   module API
     extend self
 
