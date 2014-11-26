@@ -2,9 +2,8 @@
 
 require File.expand_path('../../lib/terminal.com', __FILE__)
 
-# TODO: Don't force tokens for methods that don't need them.
+# TODO (later): Don't force tokens for methods that don't need them.
 # TODO: terminal.com configure -> ask for the credentials and save them.
-# TODO: Support booleans --featured --no-featured.
 
 def usage
   DATA.read
@@ -56,6 +55,12 @@ else
       if argument.match(/^--(.+)=(.+)$/)
         ARGV.delete(argument)
         buffer[$1.to_sym] = $2
+      elsif argument.match(/^--no-(.+)$/)
+        ARGV.delete(argument)
+        buffer[$1.to_sym] = false
+      elsif argument.match(/^--(.+)$/)
+        ARGV.delete(argument)
+        buffer[$1.to_sym] = true
       end
 
       buffer
