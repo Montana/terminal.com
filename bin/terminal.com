@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require File.expand_path('../../lib/terminal.com', __FILE__)
+require 'json'
 
 # TODO (later): Don't force tokens for methods that don't need them.
 # TODO: terminal.com configure -> ask for the credentials and save them.
@@ -12,6 +13,33 @@ end
 # -h | --help
 if ARGV.include?('-h') || ARGV.include?('--help')
   puts usage; exit
+end
+
+if ARGV.first == 'configure'
+  puts <<-EOF
+Welcome to the Terminal.com CLI client.
+
+We don't want to bother you with asking for credentials every single time,
+so instead we'll ask you for them now and save them to ~/.terminal.com.json.
+
+Alright?
+
+Go to https://www.terminal.com/settings/api
+
+And:
+  EOF
+
+  print "1. Paste your user token here: "
+  user_token = STDIN.readline.chomp
+  print "2. Generate an access token if you don't have one and paste it here: "
+  access_token = STDIN.readline.chomp
+
+  File.open(File.expand_path('~/.terminal.com.json'), 'w') do |file|
+    file.puts({user_token: user_token, access_token: access_token}.to_json)
+  end
+
+  puts "\nYour tokens were saved to ~/.terminal.com.json."
+  exit
 end
 
 # Tokens.
@@ -94,8 +122,11 @@ terminal.com [user_token] [access_token] [command]
 
 2. With a configuration file.
 
-~/.terminal.com.json
+First run terminal.com configure. This command will
+save your credentials into ~/.terminal.com.json.
 {"user_token": "...", "access_token": "..."}
+
+Then you can run commands like so:
 
 terminal.com [command]
 
