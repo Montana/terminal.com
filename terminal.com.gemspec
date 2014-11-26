@@ -21,5 +21,7 @@ Gem::Specification.new do |s|
 
   # This is only for bin/terminal.com. With this,
   # you get syntax JSON highlighting on console.
+
+  # TODO: It looks like Bundler actually install these?!?!
   s.add_development_dependency 'coderay', '~> 1'
 end
