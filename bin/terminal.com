@@ -3,6 +3,8 @@
 require File.expand_path('../../lib/terminal.com', __FILE__)
 
 # TODO: Don't force tokens for methods that don't need them.
+# TODO: terminal.com configure -> ask for the credentials and save them.
+# TODO: Support booleans --featured --no-featured.
 
 def usage
   <<-EOF
@@ -26,31 +28,82 @@ These are identical to what the API provides.
 # BROWSE SNAPSHOTS & USERS #
 get_snapshot snapshot_id
 get_profile username
-list_public_snapshots **options
-count_public_snapshots **options
+list_public_snapshots [options]
+  --username=value
+  --tag=value
+  --featured
+  --title=value
+  --page=value
+  --perPage=value
+  --sortby=value
+
+count_public_snapshots [options]
+  --username=value
+  --tag=value
+  --featured
+  --title=value
 
 # CREATE AND MANAGE TERMINALS #
 list_terminals user_token access_token
-get_terminal user_token access_token **options
-start_snapshot user_token access_token snapshot_id **options
+get_terminal user_token access_token [options]
+  --container_key=value
+  --subdomain=value
+
+start_snapshot user_token access_token snapshot_id [options]
+  --cpu=value
+  --ram=value
+  --temporary=value
+  --name=value
+  --autopause=value
+  --startup_script=value
+  --custom_data=value
+
 delete_terminal user_token access_token container_key
 restart_terminal user_token access_token container_key
 pause_terminal user_token access_token container_key
 resume_terminal user_token access_token container_key
-edit_terminal user_token access_token container_key **options
+edit_terminal user_token access_token container_key [options]
+  --cpu=value
+  --ram=value
+  --diskspace=value
+  --name=value
 
 # CREATE AND MANAGE SNAPSHOTS #
-list_snapshots user_token access_token **options
-count_snapshots user_token access_token **options
+list_snapshots user_token access_token [options]
+  --username=value
+  --tag=value
+  --featured
+  --title=value
+  --page=value
+  --perPage=value
+
+count_snapshots user_token access_token [options]
+  --username=value
+  --tag=value
+  --featured
+  --title=value
+
 delete_snapshot user_token access_token snapshot_id
-edit_snapshot user_token access_token snapshot_id **options
-snapshot_terminal user_token access_token container_key **options
+edit_snapshot user_token access_token snapshot_id [options]
+  --body=value
+  --title=value
+  --readme=value
+  --public
+  --custom_data=value
+
+snapshot_terminal user_token access_token container_key [options]
+  --body=value
+  --title=value
+  --readme=value
+  --public
 
 # MANAGE TERMINAL ACCESS #
 add_terminal_links user_token access_token container_key *links
 remove_terminal_links user_token access_token container_key *links
 list_terminal_access user_token access_token container_key
-edit_terminal_access user_token access_token container_key **options
+edit_terminal_access user_token access_token container_key [options]
+  --is_public_list
+  --access_rules=value
 
 # MANAGE TERMINAL DNS & DOMAINS #
 get_cname_records user_token access_token
