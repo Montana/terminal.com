@@ -1,0 +1,66 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://api.terminal.com/v0.1/get_snapshot
+    body:
+      encoding: UTF-8
+      string: '{"snapshot_id":"987f8d702dc0a6e8158b48ccd3dec24f819a7ccb2756c396ef1fd7f5b34b7980"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - openresty/1.5.11.1
+      Date:
+      - Wed, 26 Nov 2014 20:35:25 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Powered-By:
+      - Express
+      Vary:
+      - Accept-Encoding
+      Set-Cookie:
+      - connect.sid=s%3AcawWCz1v4mfmv5A5qfUa6dPv.0QQM1A7vzW3L%2Fqje9XHqlcSCUuSnpYx%2BRsXVKgjuYjE;
+        Path=/; HttpOnly
+    body:
+      encoding: UTF-8
+      string: '{"snapshot":{"title":"Official Ubuntu 14.04","body":"Official Ubuntu
+        14.04 distribution with minimal stack for running Terminal.com IDE. Install
+        anything, you have root access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu","image":{"files":["1406148593621.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":256,"public":true,"start_count":51780,"createdAt":"2014-07-23T20:27:41.743Z","comments":[{"createdAt":"2014-07-25T17:53:55.303Z","body":"How
+        do I get a connection to the outside Internet? Running apt-get update just
+        fails to resolve all the domains.","id":"d2e5d3bd-bd6f-4244-b29e-64a50b2f76eb","user":{"username":"nkorth","avatar":"//www.gravatar.com/avatar/d93c52e6f9926bfae9f6a665a1b87d7b.jpg?s=80&d=mm"}},{"createdAt":"2014-07-26T23:36:07.670Z","body":"networking
+        now works! sorry about that!","id":"47d160c7-6bd7-4d11-9f66-61e30d374115","user":{"username":"varunc","avatar":"//www.gravatar.com/avatar/e06ae167720f9383b8b34aa0a5fddd8d.jpg?s=80&d=mm"}},{"createdAt":"2014-08-02T18:04:00.464Z","body":"\"28:
+        No space left on device\" running apt-get update on a fresh temporary terminal.","id":"62c571c1-c4a0-41b7-b5b2-065b3f790c6b","user":{"username":null,"avatar":null}},{"createdAt":"2014-08-08T16:53:39.406Z","body":"I''m
+        getting \"No cpu state\". Am I doing anything wrong? Thanks","id":"345413d3-b6a6-4f37-bf83-7f51b7c91afb","user":{"username":"rxaviers","avatar":"//www.gravatar.com/avatar/6e836e35b57421faa0067702089ed46e.jpg?s=80&d=mm"}},{"createdAt":"2014-08-19T06:58:25.371Z","body":"My
+        file that I put there yesterday isn''t there today.  And today i can''t put
+        a file on it.","id":"76b0a9ae-61f8-41c1-b6c5-0048917e2042","user":{"username":"starcade","avatar":"//www.gravatar.com/avatar/4119e6a15c6db1cb53814f99a5f8079c.jpg?s=80&d=mm"}},{"createdAt":"2014-08-19T21:45:08.963Z","body":"right
+        now ifconfig shows no venet0 network interface...","id":"602650b4-c546-4996-9f86-b2dd924ebc62","user":{"username":"agreg0ire","avatar":"//www.gravatar.com/avatar/63a747619468c433dc74d07586b5e05c.jpg?s=80&d=mm"}},{"createdAt":"2014-09-02T18:54:35.335Z","body":"On
+        this host, the resolv.conf contains:\n\nnameserver 54.200.68.81\n\nThat DNS
+        server cannot resolve api.terminal.com. You may wish to switch to google''s
+        dns sever 8.8.8.8 or fix the name server listed above.","id":"17b432d3-3e81-4611-99ba-5db5ae277f43","user":{"username":"crunchbase","avatar":"//www.gravatar.com/avatar/5beaa31310d4d52c0ac368da4741b427.jpg?s=80&d=mm"}},{"createdAt":"2014-10-17T13:26:10.713Z","body":"How
+        to setup virtual host?\nI want 1) www.temp.com to be served at /var/www/http/
+        2) foo.temp.com at /var/www/http/foo and 3) bar.temp.com at /var/www/http/bar
+        . How do I do that? I achieved 1) by assigning www.temp.com to my terminal
+        port 80 and CNAMEing www.temp.com to terminal.com But what about 2) and 3)?
+        More specifically what''s ServerName in foo.conf and bar.conf (in /etc/apache2/sites-available/)?","id":"a2894a5c-130c-45b0-a1c7-78f10b471a53","user":{"username":"rootkea","avatar":"//www.gravatar.com/avatar/9c2f2032e003370f8feab25c5c77fcac.jpg?s=80&d=mm"}},{"createdAt":"2014-10-22T11:50:35.983Z","body":"My
+        Ubuntu 14.04.","id":"b79603e5-55d3-4170-ac70-3b2cb5a8195d","user":{"username":"tobe","avatar":"//www.gravatar.com/avatar/000e3a5cc4b231a7751ef936eca450f7.jpg?s=80&d=mm"}},{"createdAt":"2014-10-25T06:02:34.455Z","body":"How
+        much total disk space comes with this terminal ?. Using the Medium instance
+        type ?","id":"721eb480-286d-4f2d-9a50-659a72d9c59f","user":{"username":"hareemca","avatar":"//www.gravatar.com/avatar/a3c1a8a90a088c89f9c6ad12bc7d867a.jpg?s=80&d=mm"}}],"featured":true,"author":"terminal","id":"987f8d702dc0a6e8158b48ccd3dec24f819a7ccb2756c396ef1fd7f5b34b7980","templateKey":"varun_TvDrEhQ5TiqX6kgkfbsoMg"}}'
+    http_version: 
+  recorded_at: Wed, 26 Nov 2014 20:35:25 GMT
+recorded_with: VCR 2.9.3
