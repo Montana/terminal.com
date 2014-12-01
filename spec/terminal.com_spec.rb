@@ -215,5 +215,69 @@ describe Terminal::API do
         end
       end
     end
+
+    describe '.start_snapshot(user_token, access_token, snapshot_id, **options)' do
+      it 'should start given snapshot' do
+        response = VCR.use_cassette('start_snapshot') do
+          snapshot_id = '57eff3574ac8d438224dc3aa1c6431a0dbac849a0c254e89be2e758d8113c234'
+          described_class.start_snapshot(user_token, access_token, snapshot_id)
+        end
+
+        response = VCR.use_cassette('start_snapshot_request_progress') do
+          described_class.request_progress(response['request_id'])
+        end
+
+        expect(response['status']).to eql('created')
+      end
+
+      context 'with given cpu and ram' do
+        it 'should start given snapshot' do
+          response = VCR.use_cassette('start_snapshot_valid_cpu_ram') do
+            snapshot_id = '57eff3574ac8d438224dc3aa1c6431a0dbac849a0c254e89be2e758d8113c234'
+            described_class.start_snapshot(user_token, access_token, snapshot_id, cpu: '2 (max)', ram: 256)
+          end
+
+          sleep 15.5 unless File.exist?('spec/fixtures/start_snapshot_request_progress_valid_cpu_ram.yml')
+
+          response = VCR.use_cassette('start_snapshot_request_progress_valid_cpu_ram') do
+            described_class.request_progress(response['request_id'])
+          end
+
+          expect(response['status']).to eql('success')
+          expect(response['result']['cpu']).to eql('2 (max)')
+          expect(response['result']['ram']).to eql(256)
+        end
+
+        it 'should start given snapshot' do
+          response = VCR.use_cassette('start_snapshot_valid_cpu_ram_2') do
+            snapshot_id = '57eff3574ac8d438224dc3aa1c6431a0dbac849a0c254e89be2e758d8113c234'
+            described_class.start_snapshot(user_token, access_token, snapshot_id, cpu: 200, ram: 800)
+          end
+
+          request_id = response['request_id']
+
+          sleep 16 unless File.exist?('spec/fixtures/start_snapshot_request_progress_valid_cpu_ram_2.yml')
+
+          response = VCR.use_cassette('start_snapshot_request_progress_valid_cpu_ram_2') do
+            described_class.request_progress(request_id)
+          end
+
+          p response
+
+          # :cpu, :ram, :temporary, :name, :autopause, :startup_script, :custom_data)
+          #   "result"=>{"cpu"=>"2 (max)", "ram"=>256, "diskspace"=>10,
+          #     "name"=>"Ubuntu 14.04 Base Dev Snapshot",
+          #     "snapshot_id"=>"57eff3574ac8d438224dc3aa1c6431a0dbac849a0c254e89be2e758d8113c234",
+          #     "status"=>"running", "allow_spot"=>false,
+          #     "container_key"=>"d6e9e1ee-d334-4027-b365-5d7eebe5a1d7",
+          #     "subdomain"=>"botanicus221", "container_ip"=>"240.3.42.64",
+          #     "creation_time"=>1417452412482}}
+          # expect(response['result']).to
+          expect(response['status']).to eql('created')
+          expect(response['result']['cpu']).to eql(200)
+          expect(response['result']['ram']).to eql(800)
+        end
+      end
+    end
   end
 end
