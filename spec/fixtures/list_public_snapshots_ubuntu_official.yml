@@ -1,0 +1,82 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://api.terminal.com/v0.1/list_public_snapshots
+    body:
+      encoding: UTF-8
+      string: '{"title":"Official Ubuntu 14.04"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - openresty/1.5.11.1
+      Date:
+      - Mon, 01 Dec 2014 11:29:24 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Powered-By:
+      - Express
+      Vary:
+      - Accept-Encoding
+      Set-Cookie:
+      - connect.sid=s%3AFrnuLCT9C7G8-2rOYJAad7dK.QIdM9ND7vJMVC7WONZMbHf5wlZq0kkR7W1fNTY69S34;
+        Path=/; HttpOnly
+    body:
+      encoding: UTF-8
+      string: '{"snapshots":[{"title":"Official Ubuntu 14.04","body":"Official Ubuntu
+        14.04 distribution with minimal stack for running Terminal.com IDE. Install
+        anything, you have root access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu","image":{"files":["1406148593621.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":3200,"public":true,"start_count":0,"createdAt":"2014-11-21T17:23:41.100Z","featured":false,"author":"leggo414","id":"f89ae7a59f4823c9b915ed816a46cad8c22548255cdfdaf24f4cede60694744b","templateKey":"johnfernandez2201_7lsCs5W1RXeq6fITfwrpNA"},{"title":"Official
+        Ubuntu 14.04","body":"Official Ubuntu 14.04 distribution with minimal stack
+        for running Terminal.com IDE. Install anything, you have root access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu","image":{"files":["1406148593621.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":256,"public":true,"start_count":3,"createdAt":"2014-11-20T17:40:10.689Z","featured":false,"author":"suzon007","id":"2ac68658d6d04b77eda5f4a81564cc8d80435a2087240447b19bf4e9ed7025e2","templateKey":"jon.islam420_oRvlSAx0Ru6x7cQfWwO-tQ"},{"title":"Official
+        Ubuntu 14.04","body":"Official Ubuntu 14.04 distribution with minimal stack
+        for running Terminal.com IDE. Install anything, you have root access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu","image":{"files":["1406148593621.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":256,"public":true,"start_count":1,"createdAt":"2014-11-19T23:08:16.315Z","featured":false,"author":"oscarbatori","id":"0c1b14e5254db22f7036ce37244a93ac27d424e89efce274de5f89949c0bb840","templateKey":"oscarbatori_4Kw5HWcSRgapE4UuFnD0Zg"},{"title":"Official
+        Ubuntu 14.04","body":"Official Ubuntu 14.04 distribution with minimal stack
+        for running Terminal.com IDE. Install anything, you have root access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu","image":{"files":["1406148593621.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":800,"public":true,"start_count":6,"createdAt":"2014-10-04T11:56:42.556Z","featured":false,"author":"eahefnawy","id":"9e8b2e51f630e00a5f4cae8a4fa53129055e997a617765673fc41405743ab7ad","templateKey":"eahefnawy_mjReMaY9R1yzjsJAoj6oDw"},{"title":"Official
+        Ubuntu 14.04","body":"Official Ubuntu 14.04 distribution with minimal stack
+        for running Terminal.com IDE. Install anything, you have root access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu","image":{"files":["1406148593621.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":256,"public":true,"start_count":6,"createdAt":"2014-08-28T03:30:15.268Z","featured":false,"author":"varunc","id":"217ce323e3fe3a603ca3747dca86c783617c284451c870ef2f31b44a252da40f","templateKey":"varun_eHjOzb7GR8OXoBvCLS1-bg"},{"title":"Haskell
+        Platform on Official Ubuntu 14.04","body":"I installed haskell-platform onto
+        the base terminal with the following description:\r\n\r\nOfficial Ubuntu 14.04
+        distribution with minimal stack for running Terminal.com IDE. Install anything,
+        you have root access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu,haskell","image":{"files":["1407822011271.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":256,"public":true,"start_count":8,"createdAt":"2014-08-12T05:37:03.247Z","featured":false,"author":"ncrowell","id":"0d7b978d520526dc745b33676d4d54e48f9fccd9c27c367c81aa261d9ac77251","templateKey":"nicolas.crowell_Ia5vkWvBRXm0Yz5pVha5Xw"},{"title":"Official
+        Ubuntu 14.04","body":"Official Ubuntu 14.04 distribution with minimal stack
+        for running Terminal.com IDE. Install anything, you have root access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu","image":{"files":["1406148593621.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":256,"public":true,"start_count":1,"createdAt":"2014-08-05T04:44:34.036Z","featured":false,"author":"eddyv","id":"62462b49eec4c6537ca40573adf4d6eb6123b634884b2e367690c0edb3786ebc","templateKey":"eddy.vasile_gaJWQDvCSn2I36ixkmsd0w"},{"title":"Official
+        Ubuntu 14.04","body":"Official Ubuntu 14.04 distribution with minimal stack
+        for running Terminal.com IDE. Install anything, you have root access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu","image":{"files":["1406148593621.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":256,"public":true,"start_count":0,"createdAt":"2014-08-03T18:18:10.484Z","featured":false,"author":"brylevkirill","id":"01621892ddc0c40279f6717b20764afc76be97b79be0fe84543ca074c5fbc9cc","templateKey":"brylevkirill_LlM7Sv4JRiKFTVcsrMb2lQ"},{"title":"Official
+        Ubuntu 14.04","body":"Official Ubuntu 14.04 distribution with minimal stack
+        for running Terminal.com IDE. Install anything, you have root access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu","image":{"files":["1406148593621.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":256,"public":true,"start_count":0,"createdAt":"2014-08-03T17:57:52.096Z","featured":false,"author":"ivantsoft","id":"d4d6ef662d284c1c1af701625c5e1c744fbc66d841b4022d4ed10507bfb5d6a3","templateKey":"ivantsoft_QKMLdBjhSxOM6c7gcdijQg"},{"title":"Official
+        Ubuntu 14.04","body":"Official Ubuntu 14.04 distribution with minimal stack
+        for running Terminal.com IDE. Install anything, you have root access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu","image":{"files":["1406148593621.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":1600,"public":true,"start_count":0,"createdAt":"2014-08-03T17:00:14.465Z","featured":false,"author":"marco60","id":"f59320cf8c462e49668b1397ee2f8901ccdf9846cb08d2ed085a768e30421449","templateKey":"mariana-95_IouWfJfzTo-i1BFK-plWGA"},{"title":"Official
+        Ubuntu 14.04","body":"Official Ubuntu 14.04 distribution with minimal stack
+        for running Terminal.com IDE. Install anything, you have root access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu","image":{"files":["1406148593621.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":1600,"public":true,"start_count":0,"createdAt":"2014-07-28T10:12:37.416Z","featured":false,"author":"VICIS","id":"399cf571875cab6e8b25ab47ec3e7a0249180025f04e72315437862db5897af9","templateKey":"me_TYPfdpsiTfq0shGrtPBuZA"},{"title":"Official
+        Ubuntu 14.04","body":"Official Ubuntu 14.04 distribution with minimal stack
+        for running Terminal.com IDE. Install anything, you have root access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu","image":{"files":["1406148593621.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":256,"public":true,"start_count":0,"createdAt":"2014-07-27T23:42:53.486Z","featured":false,"author":"donokuda","id":"4285b4d6d5f82910d8c2979dad603914c45b818ea712f7f071bf6d340366b6a3","templateKey":"don_XcIcJgcJRAOr4MdPRUyWHQ"},{"title":"Official
+        Ubuntu 14.04 (2014-07-27)","body":"Official Ubuntu 14.04 distribution with
+        minimal stack for running Terminal.com IDE. Install anything, you have root
+        access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu","image":{"files":["1406148593621.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":256,"public":true,"start_count":0,"createdAt":"2014-07-27T19:06:44.520Z","featured":false,"author":"jamessapara","id":"6856ea72a809d4156351b10d959960d454dcde4580a2483596c0fcc8fb9c444c","templateKey":"james.sapara_hebQXH-7RsWl-9eTC4-GKA"},{"title":"Official
+        Ubuntu 14.04","body":"Official Ubuntu 14.04 distribution with minimal stack
+        for running Terminal.com IDE. Install anything, you have root access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu","image":{"files":["1406148593621.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":256,"public":true,"start_count":3,"createdAt":"2014-07-24T06:38:01.280Z","featured":false,"author":"73iru","id":"2bebc9ba235bd3d0af7bed1dddb8541d200944bf177f794fe7af452651b3d226","templateKey":"leiru2s_ACVXJp_7QdyVu2vBYs88KQ"},{"title":"Official
+        Ubuntu 14.04","body":"Official Ubuntu 14.04 distribution with minimal stack
+        for running Terminal.com IDE. Install anything, you have root access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu","image":{"files":["1406148593621.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":3200,"public":true,"start_count":0,"createdAt":"2014-07-24T03:01:59.421Z","featured":false,"author":"fasfl","id":"8a634f97c720d747b9bc31695aaa2ff5984b6646b1b2375f84d95d51f3dfd458","templateKey":"fasfl_PfemcYKtSy2N9xy_2AXmmg"},{"title":"Official
+        Ubuntu 14.04","body":"Official Ubuntu 14.04 distribution with minimal stack
+        for running Terminal.com IDE. Install anything, you have root access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu","image":{"files":["1406148593621.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":256,"public":true,"start_count":0,"createdAt":"2014-07-24T01:34:50.087Z","featured":false,"author":"anamishboy","id":"c08ea1188cd9676a3a6f2cfb4ada15021a75bed956099653eca5bbd901dfa3ef","templateKey":"anamishboy_cRRxDCPPTD2hsox15vZq5g"},{"title":"Official
+        Ubuntu 14.04","body":"Official Ubuntu 14.04 distribution with minimal stack
+        for running Terminal.com IDE. Install anything, you have root access.","display_style":"readme","readme":"","pynb":"","tags":"ubuntu","image":{"files":["1406148593621.png"],"cdnUri":"http://s3-us-west-2.amazonaws.com/com.terminal.imager"},"diskspace":10,"ram":256,"public":true,"start_count":55129,"createdAt":"2014-07-23T20:27:41.743Z","featured":true,"author":"terminal","id":"987f8d702dc0a6e8158b48ccd3dec24f819a7ccb2756c396ef1fd7f5b34b7980","templateKey":"terminal_osgJCpMwSxqp2EprRCHIwA"}]}'
+    http_version: 
+  recorded_at: Mon, 01 Dec 2014 11:29:24 GMT
+recorded_with: VCR 2.9.3

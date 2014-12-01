@@ -1,0 +1,45 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://api.terminal.com/v0.1/get_profile
+    body:
+      encoding: UTF-8
+      string: '{"username":"botanicus"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - openresty/1.5.11.1
+      Date:
+      - Mon, 01 Dec 2014 11:29:13 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '186'
+      Connection:
+      - keep-alive
+      X-Powered-By:
+      - Express
+      Vary:
+      - Accept-Encoding
+      Set-Cookie:
+      - connect.sid=s%3AvxBSbQm2WQI7-yRYU7m0Gr34.UkVxH%2FnLMeuEgSDrIpYl5y5lTKD9KH7Ny09ZLuS%2F0hQ;
+        Path=/; HttpOnly
+    body:
+      encoding: UTF-8
+      string: '{"user":{"name":"James C Russell","username":"botanicus","url":"","company":"","location":"","profile_image":"//www.gravatar.com/avatar/74c419a50563fa9e5044820c2697ffd6.jpg?s=400&d=mm"}}'
+    http_version: 
+  recorded_at: Mon, 01 Dec 2014 11:29:14 GMT
+recorded_with: VCR 2.9.3
