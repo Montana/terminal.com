@@ -1,0 +1,46 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://api.terminal.com/v0.1/get_terminal
+    body:
+      encoding: UTF-8
+      string: '{"container_key":"b878c064-fc2b-4f14-81fa-ca10ac9385ff","user_token":"73449ae08fce0d0cdf1d4dc6134b3c049538254a4cc7bc69e9e6a6c84c3823e4","access_token":"sz2AXTf2izcStaiBwP6JLz8v4VIH5NEH"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - openresty/1.5.11.1
+      Date:
+      - Mon, 01 Dec 2014 16:41:08 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '399'
+      Connection:
+      - keep-alive
+      X-Powered-By:
+      - Express
+      Vary:
+      - Accept-Encoding
+      Set-Cookie:
+      - connect.sid=s%3APvExQ-V8K6GXxBvFj9_PjBoZ.GrfiqF7rcPFineOSH7HSHvKpkksjQRbBEEVLMakRhfU;
+        Path=/; HttpOnly
+    body:
+      encoding: UTF-8
+      string: '{"terminal":{"cpu":"2 (max)","ram":"256","diskspace":"10","name":"Coding
+        Interview: John Doe Jr","snapshot_id":"57eff3574ac8d438224dc3aa1c6431a0dbac849a0c254e89be2e758d8113c234","temporary":"false","custom_data":"","status":"suspended","allow_spot":"false","container_key":"b878c064-fc2b-4f14-81fa-ca10ac9385ff","subdomain":"botanicus117","container_ip":"240.1.9.4","creation_time":"1413560572851"}}'
+    http_version: 
+  recorded_at: Mon, 01 Dec 2014 16:41:09 GMT
+recorded_with: VCR 2.9.3

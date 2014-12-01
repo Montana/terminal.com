@@ -11,7 +11,7 @@ end
 RSpec.configure do |config|
   config.include Module.new {
     def credentials
-      @credentials ||= YAML.load_file('spec/fixtures/credentials.yml')
+      @credentials ||= YAML.load_file('spec/credentials.yml')
     end
 
     def user_token

@@ -182,5 +182,38 @@ describe Terminal::API do
   ###############################
 
   describe 'CREATE AND MANAGE TERMINALS' do
+    describe '.list_terminals(user_token, access_token)' do
+      it 'lists all my Terminals' do
+        response = VCR.use_cassette('list_terminals') do
+          described_class.list_terminals(user_token, access_token)
+        end
+
+        expect(response['terminals'].length).to eq(2)
+        expect(response['terminals'][0]['name']).to eql('Coding Interview: John Doe Jr')
+      end
+    end
+
+    describe '.get_terminal(user_token, access_token, **options)' do
+      context 'with given container_key' do
+        it 'retrieves info about given Terminal' do
+          response = VCR.use_cassette('get_terminal_with_container_key') do
+            container_key = 'b878c064-fc2b-4f14-81fa-ca10ac9385ff'
+            described_class.get_terminal(user_token, access_token, container_key: container_key)
+          end
+
+          expect(response['terminal']['name']).to eql('Coding Interview: John Doe Jr')
+        end
+      end
+
+      context 'with given subdomain' do
+        it 'retrieves info about given Terminal' do
+          response = VCR.use_cassette('get_terminal_with_subdomain') do
+            described_class.get_terminal(user_token, access_token, subdomain: 'botanicus117')
+          end
+
+          expect(response['terminal']['name']).to eql('Coding Interview: John Doe Jr')
+        end
+      end
+    end
   end
 end
