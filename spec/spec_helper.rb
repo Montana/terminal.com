@@ -1,6 +1,8 @@
 require 'vcr'
 require 'yaml'
 
+ENV['DBG'] = 'curl'
+
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/fixtures'
   config.hook_into :webmock # or :fakeweb

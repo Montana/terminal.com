@@ -25,6 +25,7 @@ module Terminal
     end
 
     # https://www.terminal.com/api/docs#list-public-snapshots
+    # sortby: 'popularity'
     def list_public_snapshots(**options)
       ensure_options_validity(options,
         :username, :tag, :featured, :title, :page, :perPage, :sortby)
@@ -366,12 +367,29 @@ module Terminal
     end
 
     def call(path, data)
-      path     = "/#{API_VERSION}#{path}"
-      response = request.post(path, data.to_json, HEADERS)
+      path = "/#{API_VERSION}#{path}"
+      json = data.to_json
+
+      curl_debug(path, data.to_json)
+
+      response = request.post(path, json, HEADERS)
       status   = response.code.to_i
+
       return JSON.parse(response.body) if status == 200
 
       raise "Unexpected status: #{response.inspect}"
+    end
+
+    def curl_debug(path, json)
+      return if ENV['DBG'].nil?
+
+      headers = HEADERS.reduce(Array.new) do |buffer, (key, value)|
+        buffer << "#{key}: #{value}"
+      end.join(' ')
+
+      STDERR.puts <<-EOF
+curl -L -X POST -H '#{headers}' -d '#{json}' https://api.terminal.com#{path}
+      EOF
     end
 
     def ensure_options_validity(options, *valid_keys)
