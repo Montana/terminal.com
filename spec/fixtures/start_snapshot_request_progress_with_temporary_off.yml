@@ -1,0 +1,46 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://api.terminal.com/v0.1/request_progress
+    body:
+      encoding: UTF-8
+      string: '{"request_id":"1417457037487::james@101ideas.cz:create:207742::d865b4a3-774e-4c59-859d-c9aabf15f0ec"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - openresty/1.5.11.1
+      Date:
+      - Mon, 01 Dec 2014 18:04:14 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '778'
+      Connection:
+      - keep-alive
+      X-Powered-By:
+      - Express
+      Vary:
+      - Accept-Encoding
+      Set-Cookie:
+      - connect.sid=s%3AYcF316KnHP_PWLjfkXCQJ6Ac.ZC2iIf0wG4mMmScw2i1F%2FAwMBGfXg1FfyIlBA4dJ%2Bus;
+        Path=/; HttpOnly
+    body:
+      encoding: UTF-8
+      string: '{"operation":"create","status":"success","rpc_param":{"prog":"/root/cloudlabs/compute/hardware_node_manager/vzscripts/clone_template.sh","args":["shared/james_ahHMhe7LQtOwgidrBoAMkw",207742,"240.3.43.126","james@101ideas.cz",256,200,10,10,"5320768b-0fb7-4e49-8d4d-8a645f4f4c57","botanicus253","0","","1417457037487::james@101ideas.cz:create:207742::d865b4a3-774e-4c59-859d-c9aabf15f0ec"]},"state":"success","result":{"cpu":"2
+        (max)","ram":256,"diskspace":10,"name":"Ubuntu 14.04 Base Dev Snapshot","snapshot_id":"57eff3574ac8d438224dc3aa1c6431a0dbac849a0c254e89be2e758d8113c234","temporary":false,"status":"running","allow_spot":false,"container_key":"5320768b-0fb7-4e49-8d4d-8a645f4f4c57","subdomain":"botanicus253","container_ip":"240.3.43.126","creation_time":1417457037502}}'
+    http_version: 
+  recorded_at: Mon, 01 Dec 2014 18:04:15 GMT
+recorded_with: VCR 2.9.3
