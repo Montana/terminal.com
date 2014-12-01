@@ -114,5 +114,49 @@ describe Terminal::API do
         end
       end
     end
+
+    describe '.count_public_snapshots(**options)' do
+      it 'fetches all the public snapshots by default' do
+        response = VCR.use_cassette('count_public_snapshots') do
+          described_class.count_public_snapshots
+        end
+
+        expect(response['snapshot_count']).to eq(460)
+      end
+
+      it 'fetches all the featured snapshots' do
+        response = VCR.use_cassette('count_public_snapshots_featured') do
+          described_class.count_public_snapshots(featured: true)
+        end
+
+        expect(response['snapshot_count']).to eq(136)
+      end
+
+      it 'fetches all the snapshots by given username' do
+        response = VCR.use_cassette('count_public_snapshots_terminal') do
+          described_class.count_public_snapshots(username: 'terminal')
+        end
+
+        expect(response['snapshot_count']).to eq(55)
+      end
+
+      it 'fetches all the snapshots with given tag' do
+        response = VCR.use_cassette('count_public_snapshots_ubuntu') do
+          described_class.count_public_snapshots(tag: 'ubuntu')
+        end
+
+        expect(response['snapshot_count']).to eq(358)
+      end
+
+      it 'fetches all the snapshots with given title' do
+        response = VCR.use_cassette('count_public_snapshots_ubuntu_official') do
+          described_class.count_public_snapshots(title: 'Official Ubuntu 14.04')
+        end
+
+        # Here's a slight caveat, this is not eql, but match. So the following are both valid:
+        # ["Official Ubuntu 14.04", "Haskell Platform on Official Ubuntu 14.04"]
+        expect(response['snapshot_count']).to eq(17)
+      end
+    end
   end
 end
