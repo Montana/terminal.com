@@ -25,7 +25,7 @@ module Terminal
     end
 
     # https://www.terminal.com/api/docs#list-public-snapshots
-    # sortby: 'popularity'
+    # sortby options: 'popularity', 'date'
     def list_public_snapshots(**options)
       ensure_options_validity(options,
         :username, :tag, :featured, :title, :page, :perPage, :sortby)

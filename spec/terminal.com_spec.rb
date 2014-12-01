@@ -12,6 +12,11 @@ describe Terminal::API do
     end
   end
 
+
+  ############################
+  # BROWSE SNAPSHOTS & USERS #
+  ############################
+
   describe 'BROWSE SNAPSHOTS & USERS' do
     describe '.get_snapshot(snapshot_id)' do
       it 'fetches info about the snapshot' do
@@ -89,6 +94,17 @@ describe Terminal::API do
         expect(start_counts).to eq(start_counts.sort.reverse)
       end
 
+      it 'fetches all the featured snapshots sorted by date' do
+        response = VCR.use_cassette('list_public_snapshots_featured_sorted_by_date') do
+          described_class.list_public_snapshots(featured: true, sortby: 'date')
+        end
+
+        expect(response['snapshots'].map { |snap| snap['featured'] }).to all(be(true))
+
+        created_at_dates = response['snapshots'].map { |snap| Date.parse(snap['createdAt']) }
+        expect(created_at_dates).to eq(created_at_dates.sort.reverse)
+      end
+
       context 'with pagination' do
         it 'fetches first page of the public snapshots' do
           response = VCR.use_cassette('list_public_snapshots_page_1') do
@@ -158,5 +174,13 @@ describe Terminal::API do
         expect(response['snapshot_count']).to eq(17)
       end
     end
+  end
+
+
+  ###############################
+  # CREATE AND MANAGE TERMINALS #
+  ###############################
+
+  describe 'CREATE AND MANAGE TERMINALS' do
   end
 end
