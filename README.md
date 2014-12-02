@@ -71,11 +71,13 @@ Terminal.list_public_snapshots
 
 # Command-Line Client
 
-Anything you can do from the library can be done through the CLI client. There are two ways how you can use it.
+Anything the library do can be done through the command-line client. There are two ways how you can use it.
 
 ![](docs/terminal-cli-client.png)
 
 ## Without Configuration
+
+This is a command-line equivalent of the low-level API: you have to specify `user_token` and `access_token` every single time.
 
 ```bash
 terminal.com [user_token] [access_token] list_terminals
@@ -85,7 +87,7 @@ terminal.com [user_token] [access_token] list_terminals
 
 ## With Configuration
 
-Specifying the credentials every single time can be quite tedious. That's where `terminal.com configure` comes in handy:
+This is a command-line equivalent of the high-level API: your `user_token` and `access_token` are saved in `~/.terminal.com.json`, so you don't have to pass them in every single time.
 
 ![](docs/terminal-com-configure.png)
 
@@ -93,7 +95,6 @@ Specifying the credentials every single time can be quite tedious. That's where 
 # One time only.
 terminal.com configure
 
-# Now you can simply do:
 terminal.com list_terminals
 ```
 
