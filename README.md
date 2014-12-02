@@ -2,13 +2,13 @@
 
 This is a Ruby wrapper for [Terminal.com](https://www.terminal.com) API. It works on **Ruby 2**; Ruby 1.8 or 1.9 are not supported. It contains:
 
-- [Low-level API](#low-level-api) 1:1 mapping to Terminal.com endpoints.
+- [Low-level API](#low-level-api) which is 1:1 mapping to Terminal.com endpoints.
 - [High-level object-oriented API](#high-level-terminalapi).
 - [Command-line client](#command-line-client).
 
-This library has **no dependencies**. You can optionally use it with CodeRay to get syntax-highlighted responses in the command-line client, but the core doesn't depend on any 3rd party library.
+This library has **no external dependencies**. You can optionally use it with CodeRay to get syntax-highlighted responses in the command-line client, but the core doesn't depend on any 3rd party library.
 
-It uses `net/http` for network communication. Writing an adapter for a different HTTP library is as simple as overriding `Terminal.call` method. In future more HTTP libraries _might_ be supported.
+The library uses `net/http` for network communication. Writing an adapter for a different HTTP library is as simple as overriding `Terminal.call` method. In the future more HTTP libraries _might_ be supported.
 
 # Usage
 
@@ -43,11 +43,12 @@ Terminal.list_terminals(my_user_token, my_access_token)
 # Let's start a small instance of the official Ubuntu 14.04 snapshot.
 snapshot_id = '987f8d702dc0a6e8158b48ccd3dec24f819a7ccb2756c396ef1fd7f5b34b7980'
 Terminal.start_snapshot(my_user_token, my_access_token, snapshot_id, cpu: 100, ram: 1600)
+# {"request_id":"1417456495137::james@101ideas.cz:create:207693::4e765da6-2cc0-4054-a0dc-00b47a004d79"}
 ```
 
 ## High-Level `Terminal::API`
 
-Class `Terminal::API` provides abstraction for calls to endpoint that requires authentication. So instead of calling methods on `Terminal` every time with passing `user_token` and `access_token` as arguments, you can just instantiate `Terminal::API` and reuse your credentials.
+Class `Terminal::API` provides *abstraction for calls to the endpoints that requires authentication*. So instead of calling methods on `Terminal` every time with passing `user_token` and `access_token` as arguments, you can just instantiate `Terminal::API` and reuse your credentials.
 
 ### Example
 
@@ -62,6 +63,10 @@ terminal_com.list_terminals
 # Let's start a small instance of the official Ubuntu 14.04 snapshot.
 snapshot_id = '987f8d702dc0a6e8158b48ccd3dec24f819a7ccb2756c396ef1fd7f5b34b7980'
 terminal_com.start_snapshot(snapshot_id, instance: 'small')
+
+# Note that for calls that don't require authentication,
+# you still have to use methods on the Terminal module.
+Terminal.list_public_snapshots
 ```
 
 # Command-Line Client
