@@ -71,7 +71,7 @@ Terminal.list_public_snapshots
 
 # Command-Line Client
 
-Anything the library do can be done through the command-line client. There are two ways how you can use it.
+Anything the library do can be done through the command-line client. There are two ways how you can use it: [with your credentials saved](#with-configuration) in `~/.terminal.com.json` or [without it](#without-configuration).
 
 Arguments are mapped exactly the same way as in the Ruby API:
 
@@ -81,7 +81,8 @@ Arguments are mapped exactly the same way as in the Ruby API:
 ## Keyword Arguments
 
 - Booleans: `--featured` or `--no-featured`.
-- Other values: `--tag=ruby`, `--ram=256`.
+- Strings: `--tag=ruby`.
+- Integers `--ram=256`.
 
 ![](docs/terminal-cli-client.png)
 
