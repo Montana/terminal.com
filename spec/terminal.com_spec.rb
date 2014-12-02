@@ -230,6 +230,22 @@ describe Terminal::API do
         expect(response['status']).to eql('created')
       end
 
+      context 'with either cpu or ram' do
+        it 'should raise an argument error if only cpu is provided' do
+          expect {
+            snapshot_id = '57eff3574ac8d438224dc3aa1c6431a0dbac849a0c254e89be2e758d8113c234'
+            described_class.start_snapshot(user_token, access_token, snapshot_id, cpu: '2 (max)')
+          }.to raise_error(ArgumentError)
+        end
+
+        it 'should raise an argument error if only ram is provided' do
+          expect {
+            snapshot_id = '57eff3574ac8d438224dc3aa1c6431a0dbac849a0c254e89be2e758d8113c234'
+            described_class.start_snapshot(user_token, access_token, snapshot_id, ram: 256)
+          }.to raise_error(ArgumentError)
+        end
+      end
+
       context 'with given cpu and ram' do
         it 'should start given snapshot with cpu 2 (max) and ram 256' do
           response = VCR.use_cassette('start_snapshot_valid_cpu_ram') do

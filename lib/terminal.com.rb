@@ -62,6 +62,10 @@ module Terminal
 
     # https://www.terminal.com/api/docs#start-snapshot
     def start_snapshot(user_token, access_token, snapshot_id, **options)
+      if (options[:cpu] && ! options[:ram]) || (options[:ram] && ! options[:cpu])
+        raise ArgumentError.new('You have to specify both cpu and ram of the corresponding instance type as described at https://www.terminal.com/faq#instanceTypes')
+      end
+
       ensure_options_validity(options,
         :cpu, :ram, :temporary, :name, :autopause, :startup_script, :custom_data)
 
