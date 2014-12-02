@@ -100,11 +100,12 @@ terminal.com [user_token] [access_token] list_terminals
 
 This is a command-line equivalent of the high-level API: your `user_token` and `access_token` are saved in `~/.terminal.com.json`, so you don't have to pass them in every single time.
 
-![](docs/terminal-com-configure.png)
-
 ```bash
-# One time only.
-terminal.com configure
-
 terminal.com list_terminals
 ```
+
+### How to Configure
+
+Run `terminal.com configure` and follow the instructions.
+
+![](docs/terminal-com-configure.png)
