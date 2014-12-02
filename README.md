@@ -55,6 +55,10 @@ require 'terminal.com/api'
 
 terminal_com = Terminal::API.new(user_token, access_token)
 terminal_com.list_terminals
+
+# Let's start a small instance of the official Ubuntu 14.04 snapshot.
+snapshot_id = '987f8d702dc0a6e8158b48ccd3dec24f819a7ccb2756c396ef1fd7f5b34b7980'
+terminal_com.start_snapshot(snapshot_id, instance: 'small')
 ```
 
 # Command-Line Client
