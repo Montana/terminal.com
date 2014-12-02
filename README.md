@@ -1,6 +1,14 @@
 # About
 
-This is a Ruby wrapper for [Terminal.com](https://www.terminal.com) API. It works on Ruby 2; Ruby 1.8 or 1.9 are not supported.
+This is a Ruby wrapper for [Terminal.com](https://www.terminal.com) API. It works on Ruby 2; Ruby 1.8 or 1.9 are not supported. It contains:
+
+- Low-level API 1:1 mapping to Terminal.com endpoints.
+- High-level object-oriented API.
+- Command-line client.
+
+This library has **no dependencies**. You can optionally use it with CodeRay to get syntax-highlighted responses in the command-line client, but the core doesn't depend on any 3rd party library.
+
+It uses `net/http` for network communication. Writing an adapter for a different HTTP library is as simple as overriding one method. In future more HTTP libraries _migth_ be supported.
 
 # Usage
 
@@ -38,7 +46,7 @@ Terminal.list_terminals(my_user_token, my_access_token)
 
 ## High-Level `Terminal::API`
 
-_Class `Terminal::API` provides abstraction for calls to endpoint that requires authentication. So instead of calling methods on `Terminal` every time with passing `user_token` and `access_token` as arguments, you can just instantiate `Terminal::API` and reuse your credentials._
+Class `Terminal::API` provides abstraction for calls to endpoint that requires authentication. So instead of calling methods on `Terminal` every time with passing `user_token` and `access_token` as arguments, you can just instantiate `Terminal::API` and reuse your credentials.
 
 ### Example
 
