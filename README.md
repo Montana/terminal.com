@@ -73,6 +73,16 @@ Terminal.list_public_snapshots
 
 Anything the library do can be done through the command-line client. There are two ways how you can use it.
 
+Arguments are mapped exactly the same way as in the Ruby API:
+
+- All the required arguments are translated to positional arguments and comes in the same order as they are listed on the [Terminal.com API docs](https://www.terminal.com/api/docs) page.
+- All the optional arguments are specified as keyword arguments.
+
+## Keyword Arguments
+
+- Booleans: `--featured` or `--no-featured`.
+- Other values: `--tag=ruby`, `--ram=256`.
+
 ![](docs/terminal-cli-client.png)
 
 ## Without Configuration
@@ -96,10 +106,4 @@ This is a command-line equivalent of the high-level API: your `user_token` and `
 terminal.com configure
 
 terminal.com list_terminals
-```
-
-## Options
-
-```bash
-terminal.com list_public_snapshots --tag=ruby --featured
 ```
