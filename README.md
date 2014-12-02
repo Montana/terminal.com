@@ -104,7 +104,7 @@ This is a command-line equivalent of the high-level API: your `user_token` and `
 terminal.com list_terminals
 ```
 
-### How to Configure
+### How to Save Your Credentials
 
 Run `terminal.com configure` and follow the instructions.
 
