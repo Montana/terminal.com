@@ -14,42 +14,6 @@ module Terminal
       :'8xlarge' => {cpu: 3200,      ram: 51_200}
     }
 
-    ############################
-    # BROWSE SNAPSHOTS & USERS #
-    ############################
-
-    def self.get_snapshot(snapshot_id)
-      Terminal::API.get_snapshot(snapshot_id)
-    end
-
-    def self.get_profile(username)
-      Terminal::API.get_profile(username)
-    end
-
-    def self.list_public_snapshots(**options)
-      Terminal::API.list_public_snapshots(**options)
-    end
-
-    def self.count_public_snapshots(**options)
-      Terminal::API.count_public_snapshots(**options)
-    end
-
-    def get_snapshot(snapshot_id)
-      self.class.get_snapshot(snapshot_id)
-    end
-
-    def get_profile(username)
-      self.class.get_profile(username)
-    end
-
-    def list_public_snapshots(**options)
-      self.class.list_public_snapshots(**options)
-    end
-
-    def count_public_snapshots(**options)
-      self.class.count_public_snapshots(**options)
-    end
-
     def initialize(user_token, access_token)
       @user_token, @access_token = user_token, access_token
     end
@@ -179,22 +143,6 @@ module Terminal
       Terminal::API.get_terminal_idle_settings(@user_token, @access_token, container_key)
     end
 
-    def self.instance_types
-      Terminal::API.instance_types
-    end
-
-    def self.instance_price(*args)
-      Terminal::API.instance_types(*args)
-    end
-
-    def instance_types
-      self.class.instance_types
-    end
-
-    def instance_price(*args)
-      self.class.instance_price(*args)
-    end
-
     def balance
       Terminal::API.balance(@user_token, @access_token)
     end
@@ -249,10 +197,6 @@ module Terminal
 
     def who_am_i
       Terminal::API.who_am_i(@user_token, @access_token)
-    end
-
-    def request_progress(request_id)
-      Terminal::API.request_progress(request_id)
     end
   end
 end
