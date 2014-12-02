@@ -38,6 +38,8 @@ Terminal.list_terminals(my_user_token, my_access_token)
 
 ## High-Level `Terminal::API`
 
+_Class `Terminal::API` provides abstraction for calls to endpoint that requires authentication. So instead of calling methods on `Terminal` every time with passing `user_token` and `access_token` as arguments, you can just instantiate `Terminal::API` and reuse your credentials._
+
 ### Example
 
 ```ruby
