@@ -14,6 +14,13 @@ This is a Ruby wrapper for [Terminal.com](https://www.terminal.com) API. It work
 
 ## Low-Level API
 
+Module methods exposed on the `Terminal` module are 1:1 mapping of the Terminal.com API.
+
+- All the required arguments are translated to positional arguments and comes in the same order as they are listed on the [Terminal.com API docs](https://www.terminal.com/api/docs) page.
+- All the optional arguments are specified as options.
+
+### Example
+
 ```ruby
 require 'terminal.com'
 
@@ -30,6 +37,8 @@ Terminal.list_terminals(my_user_token, my_access_token)
 ```
 
 ## High-Level `Terminal::API`
+
+### Example
 
 ```ruby
 require 'terminal.com/api'
