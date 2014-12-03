@@ -1,5 +1,7 @@
 # About
 
+![Travis CI status](https://img.shields.io/travis/botanicus/terminal.com.svg)
+
 This is a Ruby wrapper for [Terminal.com](https://www.terminal.com) API. It works on **Ruby 2**; Ruby 1.8 or 1.9 are not supported. It contains:
 
 - [Low-level API](#low-level-api) which is 1:1 mapping to Terminal.com endpoints.
