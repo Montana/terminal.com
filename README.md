@@ -5,7 +5,7 @@
 [![Documentation](http://img.shields.io/badge/docs-rdoc.info-blue.svg)](http://rubydoc.org/gems/terminal.com/frames)
 ![License](http://img.shields.io/badge/license-MIT-yellowgreen.svg)
 
-This is a Ruby wrapper for [Terminal.com](https://www.terminal.com) API. It works on **Ruby 2 compatible implementations** (_including **Rubinius and JRuby_). Ruby 1.8 or 1.9 are not supported. It contains:
+This is a Ruby wrapper for [Terminal.com](https://www.terminal.com) API. It works on **Ruby 2 compatible implementations** (_including Rubinius and JRuby_). Ruby 1.8 or 1.9 are not supported. It contains:
 
 - [Low-level API](#low-level-api) which is 1:1 mapping to Terminal.com endpoints.
 - [High-level object-oriented API](#high-level-terminalapi).
