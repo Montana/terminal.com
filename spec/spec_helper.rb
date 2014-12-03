@@ -28,4 +28,12 @@ RSpec.configure do |config|
       '987f8d702dc0a6e8158b48ccd3dec24f819a7ccb2756c396ef1fd7f5b34b7980'
     end
   }
+
+  #
+  # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+  #
+
+  # Run only examples tagged with :focus or, if none, everything.
+  config.filter_run :focus
+  config.run_all_when_everything_filtered = true
 end
