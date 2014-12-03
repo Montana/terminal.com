@@ -1,6 +1,7 @@
 # About
 
 ![Travis CI status](https://img.shields.io/travis/botanicus/terminal.com.svg)
+![Gem version](https://img.shields.io/gem/v/terminal.com.svg)
 
 This is a Ruby wrapper for [Terminal.com](https://www.terminal.com) API. It works on **Ruby 2**; Ruby 1.8 or 1.9 are not supported. It contains:
 
