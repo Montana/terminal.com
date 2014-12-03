@@ -1,6 +1,3 @@
-require 'spec_helper'
-require 'terminal.com'
-
 describe Terminal do
   describe '.get_snapshot(snapshot_id)' do
     it 'fetches info about the snapshot' do

@@ -1,6 +1,3 @@
-require 'spec_helper'
-require 'terminal.com'
-
 describe Terminal do
   describe '.list_terminals(user_token, access_token)' do
     it 'lists all my Terminals' do

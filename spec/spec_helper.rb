@@ -1,6 +1,8 @@
 require 'vcr'
 require 'yaml'
 
+require 'terminal.com'
+
 ENV['DBG'] = 'curl'
 
 VCR.configure do |config|

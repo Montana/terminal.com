@@ -1,6 +1,3 @@
-require 'spec_helper'
-require 'terminal.com'
-
 describe Terminal do
   describe 'constants' do
     it 'specifies API_VERSION' do
