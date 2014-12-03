@@ -368,10 +368,12 @@ module Terminal
     call('/request_progress', request_id: request_id)
   end
 
+  # @private
   def self.request
     @request ||= Net::HTTP.new('api.terminal.com')
   end
 
+  # @public
   def self.call(path, data)
     path = "/#{API_VERSION}#{path}"
     json = data.to_json
