@@ -402,7 +402,7 @@ curl -L -X POST -H '#{headers}' -d '#{json}' https://api.terminal.com#{path}
     unrecognised_options = (options.keys - valid_keys)
 
     unless unrecognised_options.empty?
-      raise ArgumentError.new("Unrecognised options: #{unrecognised_options}")
+      raise ArgumentError.new("Unrecognised options: #{unrecognised_options.inspect[1..-2]}")
     end
   end
 end
