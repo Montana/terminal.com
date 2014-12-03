@@ -7,6 +7,8 @@
 
 language: ruby
 
+bundler_args: --without documentation
+
 script: bundle exec rspec
 
 rvm:

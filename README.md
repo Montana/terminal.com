@@ -2,6 +2,7 @@
 
 [![Travis CI Status](https://img.shields.io/travis/botanicus/terminal.com.svg)](https://travis-ci.org/botanicus/terminal.com)
 ![Gem Version](https://badge.fury.io/rb/terminal.com.svg)
+[![Documentation](http://img.shields.io/badge/docs-rdoc.info-blue.svg)](http://rubydoc.org/gems/terminal.com/frames)
 ![License](http://img.shields.io/badge/license-MIT-yellowgreen.svg)
 
 This is a Ruby wrapper for [Terminal.com](https://www.terminal.com) API. It works on **Ruby 2 compatible implementations** (_including **Rubinius and JRuby_). Ruby 1.8 or 1.9 are not supported. It contains:
