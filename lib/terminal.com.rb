@@ -383,7 +383,7 @@ module Terminal
 
     return JSON.parse(response.body) if status == 200
 
-    raise "Unexpected status: #{response.inspect}"
+    raise "Unexpected status #{status}: #{response.inspect}"
   end
 
   def self.curl_debug(path, json)
