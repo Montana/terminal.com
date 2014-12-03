@@ -25,6 +25,8 @@ The library uses `net/http` for network communication. Writing an adapter for a 
 
 # API
 
+**API docs:** [Latest release](http://www.rubydoc.info/gems/terminal.com/frames) | [Git HEAD](http://www.rubydoc.info/github/botanicus/terminal.com/master)
+
 ## Low-Level API
 
 Module methods exposed on the `Terminal` module are 1:1 mapping of the Terminal.com API. The mapping rules are simple:
