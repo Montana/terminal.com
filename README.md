@@ -116,3 +116,9 @@ terminal.com list_terminals
 Run `terminal.com configure` and follow the instructions.
 
 ![](docs/terminal-com-configure.png)
+
+# Links
+
+- [Terminal.com API docs](https://www.terminal.com/api/docs)
+- [Latest release API docs](http://www.rubydoc.info/gems/terminal.com/frames)
+- [Git HEAD API docs](http://www.rubydoc.info/github/botanicus/terminal.com/master)
