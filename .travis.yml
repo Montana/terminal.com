@@ -1,0 +1,20 @@
+#
+# Documentation
+#
+# http://about.travis-ci.org/docs/user/languages/ruby
+# http://about.travis-ci.org/docs/user/build-configuration
+# https://github.com/ruby-amqp/amqp/blob/master/.travis.yml
+
+language: ruby
+
+script: bundle exec rspec
+
+rvm:
+  - 2.0.0
+  - 2.1.0
+  - 2.1.1
+  - 2.1.2
+
+notifications:
+  recipients:
+    - james@101ideas.cz
