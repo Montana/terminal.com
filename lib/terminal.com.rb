@@ -1,8 +1,8 @@
 # This is the low-level version of Terminal.com API.
 # All it does is 1:1 mapping of Ruby methods to the API.
 #
-# If you want a more user-friendly, object-oriented API,
-# do use terminal.com/api.rb.
+# Methods that require authentication have a more
+# user-friendly, object-oriented API in Terminal::API class.
 
 require 'net/http'
 require 'json'
@@ -21,10 +21,13 @@ module Terminal
 
   # Get information on a snapshot.
   #
-  # @param snapshot_id [String] Snapshot ID.
+  # @param snapshot_id [String] Snapshot ID (the last part of the snapshot URL).
   # @return [Hash] The snapshot data.
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#get-snapshot Terminal.com API docs
+  # @example
+  #   Terminal.get_snapshot('987f8d702dc0a6e8158b48ccd3dec24f819a7ccb2756c396ef1fd7f5b34b7980')
+  #   # {"snapshot" => {"title" => "Official Ubuntu 14.04", "tags" => "ubuntu", "createdAt" => "2014-07-23T20:27:41.743Z", ...}}
   def self.get_snapshot(snapshot_id)
     call('/get_snapshot', snapshot_id: snapshot_id)
   end
@@ -35,6 +38,9 @@ module Terminal
   # @return [Hash] The profile data.
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#get-profile Terminal.com API docs
+  # @example
+  #   Terminal.get_profile('botanicus')
+  #   # {"user" => {"name" => "James C Russell", "url" => "https://twitter.com/botanicus", "location" => "London, UK", ...}}
   def self.get_profile(username)
     call('/get_profile', username: username)
   end
@@ -55,6 +61,7 @@ module Terminal
   # @see https://www.terminal.com/api/docs#list-public-snapshots Terminal.com API docs
   # @example Return all the public snapshots.
   #   Terminal.list_public_snapshots
+  #   # {"snapshots" => [{"title" => "Decision Tree", "tags" => "python,ipython", ...}, {...}]}
   #
   # @example Return all the featured snapshots from user botanicus.
   #   Terminal.list_public_snapshots(username: 'botanicus', featured: true)
