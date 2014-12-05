@@ -35,7 +35,9 @@ module Terminal
     call('/get_profile', username: username)
   end
 
-  # Get a list of public snapshots, optionally filtered by the owner's username, a tag, or the snapshot's featured status. You may use a combination of filters.
+  # Get a list of public snapshots, optionally filtered
+  # by the owner's username, a tag, or the snapshot's
+  # featured status. You may use a combination of filters.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -48,7 +50,9 @@ module Terminal
     call('/list_public_snapshots', options)
   end
 
-  # Get a count of public snapshots, optionally filtered by the owner's username, a tag, or the snapshot's featured status. You may use a combination of filters.
+  # Get a count of public snapshots, optionally filtered
+  # by the owner's username, a tag, or the snapshot's
+  # featured status. You may use a combination of filters.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -74,7 +78,8 @@ module Terminal
       user_token: user_token, access_token: access_token)
   end
 
-  # Get info about a Terminal instance of yours.  Can specify container_key, ctid, or subdomain.
+  # Get info about a Terminal instance of yours. You can
+  # specify container_key or subdomain.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -125,7 +130,9 @@ module Terminal
       user_token: user_token, access_token: access_token, container_key: container_key)
   end
 
-  # Pause a Terminal instance. The instance will be offline and inaccessible, and you will not be charged as long as it remains paused.
+  # Pause a Terminal instance. The instance will be offline
+  # and inaccessible, and you will not be charged as long as
+  # it remains paused.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -135,7 +142,9 @@ module Terminal
       user_token: user_token, access_token: access_token, container_key: container_key)
   end
 
-  # Continue running a Terminal instance. The Terminal will continue being charged, and will keep running so long as you maintain a positive balance in your account.
+  # Continue running a Terminal instance. The Terminal will
+  # continue being charged, and will keep running so long
+  # as you maintain a positive balance in your account.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -163,7 +172,9 @@ module Terminal
   # CREATE AND MANAGE SNAPSHOTS #
   ###############################
 
-  # Get a list of snapshots owned by your account, optionally filtered by the owner's username, a tag, or the snapshot's featured status. You may use a combination of filters.
+  # Get a list of snapshots owned by your account, optionally
+  # filtered by the owner's username, a tag, or the snapshot's
+  # featured status. You may use a combination of filters.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -177,7 +188,9 @@ module Terminal
     call('/list_snapshots', options)
   end
 
-  # Get a count of snapshots owned by your account, optionally filtered by the owner's username, a tag, or the snapshot's featured status. You may use a combination of filters.
+  # Get a count of snapshots owned by your account, optionally
+  # filtered by the owner's username, a tag, or the snapshot's
+  # featured status. You may use a combination of filters.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -235,7 +248,8 @@ module Terminal
   # MANAGE TERMINAL ACCESS #
   ##########################
 
-  # Add to the list of your other terminals who have access to one of your Terminal instances.
+  # Add to the list of your other terminals who have access
+  # to one of your Terminal instances.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -248,7 +262,8 @@ module Terminal
       links: links)
   end
 
-  # Remove from the list of terminals who have access to one of your Terminal instances.
+  # Remove from the list of terminals who have access to one
+  # of your Terminal instances.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -261,7 +276,8 @@ module Terminal
       links: links)
   end
 
-  # List users and emails with view or edit access to one of your Terminal instances.
+  # List users and emails with view or edit access to one
+  # of your Terminal instances.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -273,7 +289,8 @@ module Terminal
       container_key: container_key)
   end
 
-  # Edit the list of users and emails who have access to one of your Terminal instances.
+  # Edit the list of users and emails who have access to one
+  # of your Terminal instances.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -290,7 +307,9 @@ module Terminal
   # MANAGE TERMINAL DNS & DOMAINS #
   #################################
 
-  # Get a list of domains in your CNAME record pool. Domains returned by this call can be associated to your Terminal instances.
+  # Get a list of domains in your CNAME record pool. Domains
+  # returned by this call can be associated to your Terminal
+  # instances.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -300,7 +319,9 @@ module Terminal
       user_token: user_token, access_token: access_token)
   end
 
-  # Add a domain or subdomain of Terminal.com to your CNAME record pool, making it available to be associated with one of your Terminal instances.
+  # Add a domain or subdomain of Terminal.com to your CNAME
+  # record pool, making it available to be associated with
+  # one of your Terminal instances.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -310,7 +331,8 @@ module Terminal
       user_token: user_token, access_token: access_token, domain: domain)
   end
 
-  # Remove a domain or subdomain of Terminal.com from your CNAME record pool.
+  # Remove a domain or subdomain of Terminal.com from your
+  # CNAME record pool.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -320,7 +342,8 @@ module Terminal
       user_token: user_token, access_token: access_token, domain: domain)
   end
 
-  # Map a domain in your CNAME record pool to one of your Terminal instances, making it accessible via that domain.
+  # Map a domain in your CNAME record pool to one of your
+  # Terminal instances, making it accessible via that domain.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -334,7 +357,9 @@ module Terminal
       port: port)
   end
 
-  # Remove a domain mapping to one of your Terminal instances. This will mean you can no longer access the Terminal instance from that domain.
+  # Remove a domain mapping to one of your Terminal instances.
+  # This will mean you can no longer access the Terminal instance
+  # from that domain.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -380,7 +405,9 @@ module Terminal
   # MANAGE USAGE & CREDITS #
   ##########################
 
-  # Get a list of the types of Terminals that may be started, and the specifications for each type (CPU, RAM, and pricing). This endpoint does not require authentication.
+  # Get a list of the types of Terminals that may be started,
+  # and the specifications for each type (CPU, RAM, and pricing).
+  # This endpoint does not require authentication.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -389,7 +416,8 @@ module Terminal
     call('/instance_types', Hash.new)
   end
 
-  # Get the hourly pricing for a Terminal instance of a given type.  If a instance is stopped, price will be zero.
+  # Get the hourly pricing for a Terminal instance of a given type.
+  # If a instance is stopped, price will be zero.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -416,7 +444,9 @@ module Terminal
     call('/balance_added', user_token: user_token, access_token: access_token)
   end
 
-  # Gift some of your credits to another user. Denominated in whole integer US cents ($0.01). You may only gift credits if you have previously purchased credits.
+  # Gift some of your credits to another user. Denominated in whole
+  # integer US cents ($0.01). You may only gift credits if you have
+  # previously purchased credits.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -456,7 +486,9 @@ module Terminal
     call('/burn_state', user_token: user_token, access_token: access_token)
   end
 
-  # Get a summary of the charges to your account, based on each Terminal instance that you have provisioned. Note that inactive and paused terminals do not incur charges.
+  # Get a summary of the charges to your account, based on each
+  # Terminal instance that you have provisioned. Note that inactive
+  # and paused terminals do not incur charges.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
@@ -525,7 +557,8 @@ module Terminal
   # OTHER #
   #########
 
-  # Get information about yourself!  If invalid access/user token provided, returns null (but not an error).
+  # Get information about yourself!  If invalid access/user token
+  # provided, returns null (but not an error).
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
