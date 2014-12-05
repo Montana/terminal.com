@@ -12,7 +12,7 @@ def log(message)
 end
 
 def dbg(command, arguments, **options)
-  log "Terminal::API.#{command}(" +
+  log "Terminal.#{command}(" +
     ("#{arguments.inspect[1..-2]}" unless arguments.empty?).to_s +
     (", #{options.inspect[1..-2]}" unless options.empty?).to_s +
     ")\n"
@@ -36,10 +36,10 @@ def api_call(command, arguments, options)
   # => [{}]
   if options
     dbg command, arguments, options
-    print_as_json Terminal::API.send(command, *arguments, **options)
+    print_as_json Terminal.send(command, *arguments, **options)
   else
     dbg command, arguments
-    print_as_json Terminal::API.send(command, *arguments)
+    print_as_json Terminal.send(command, *arguments)
   end
 end
 
@@ -127,13 +127,13 @@ if ARGV.empty?
 else
   command = ARGV.shift
 
-  unless Terminal::API.respond_to?(command)
+  unless Terminal.respond_to?(command)
     STDERR.puts("Invalid command '#{command}'.\n\n")
     abort usage
   end
 
   # Not every method requires authentication.
-  method_args = Terminal::API.method(command).parameters.map(&:last)
+  method_args = Terminal.method(command).parameters.map(&:last)
 
   if method_args.include?(:options)
     options = ARGV.reduce(Hash.new) do |buffer, argument|
