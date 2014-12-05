@@ -17,14 +17,13 @@ module Terminal
   # The default headers for the requests.
   HEADERS = {'Content-Type' => 'application/json'}
 
-  ############################
-  # BROWSE SNAPSHOTS & USERS #
-  ############################
+  # @!group BROWSE SNAPSHOTS & USERS
 
   # Get information on a snapshot.
   #
   # @param snapshot_id [String] Snapshot ID.
   # @return [Hash] The snapshot data.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#get-snapshot Terminal.com API docs
   def self.get_snapshot(snapshot_id)
     call('/get_snapshot', snapshot_id: snapshot_id)
@@ -34,6 +33,7 @@ module Terminal
   #
   # @param username [String] Any registered username.
   # @return [Hash] The profile data.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#get-profile Terminal.com API docs
   def self.get_profile(username)
     call('/get_profile', username: username)
@@ -51,6 +51,7 @@ module Terminal
   # @option options :perPage [String] Use with `page` for pagination.
   # @option options :sortby [String] Either `popularity` or `date`.
   # @return [Hash] The snapshots.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#list-public-snapshots Terminal.com API docs
   # @example Return all the public snapshots.
   #   Terminal.list_public_snapshots
@@ -75,6 +76,7 @@ module Terminal
   # @option options :featured [Boolean] Search only for featured (or non-featured).
   # @option options :title [String] Title to be *matched* against the existing snapshots.
   # @return [Hash] The snapshot count.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#count-public-snapshots Terminal.com API docs
   # @example Number of all the public snapshots.
   #   Terminal.count_public_snapshots
@@ -90,9 +92,8 @@ module Terminal
     call('/count_public_snapshots', options)
   end
 
-  ###############################
-  # CREATE AND MANAGE TERMINALS #
-  ###############################
+  # @!endgroup
+  # @!group CREATE AND MANAGE TERMINALS
 
   # Get a list of all Terminal instances owned by your account.
   #
@@ -109,6 +110,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#get-terminal Terminal.com API docs
   def self.get_terminal(user_token, access_token, **options)
     ensure_options_validity(options, :container_key, :subdomain)
@@ -122,6 +124,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#start-snapshot Terminal.com API docs
   def self.start_snapshot(user_token, access_token, snapshot_id, **options)
     if (options[:cpu] && ! options[:ram]) || (options[:ram] && ! options[:cpu])
@@ -140,6 +143,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#delete-terminal Terminal.com API docs
   def self.delete_terminal(user_token, access_token, container_key)
     call('/delete_terminal',
@@ -150,6 +154,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#restart-terminal Terminal.com API docs
   def self.restart_terminal(user_token, access_token, container_key)
     call('/restart_terminal',
@@ -162,6 +167,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#pause-terminal Terminal.com API docs
   def self.pause_terminal(user_token, access_token, container_key)
     call('/pause_terminal',
@@ -174,6 +180,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#resume-terminal Terminal.com API docs
   def self.resume_terminal(user_token, access_token, container_key)
     call('/resume_terminal',
@@ -184,6 +191,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#edit-terminal Terminal.com API docs
   def self.edit_terminal(user_token, access_token, container_key, **options)
     ensure_options_validity(options,
@@ -194,9 +202,8 @@ module Terminal
     call('/edit_terminal', options)
   end
 
-  ###############################
-  # CREATE AND MANAGE SNAPSHOTS #
-  ###############################
+  # @!endgroup
+  # @!group CREATE AND MANAGE SNAPSHOTS
 
   # Get a list of snapshots owned by your account, optionally
   # filtered by the owner's username, a tag, or the snapshot's
@@ -204,6 +211,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#list-snapshots Terminal.com API docs
   def self.list_snapshots(user_token, access_token, **options)
     ensure_options_validity(options,
@@ -220,6 +228,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#count-snapshots Terminal.com API docs
   def self.count_snapshots(user_token, access_token, **options)
     ensure_options_validity(options,
@@ -234,6 +243,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#delete-snapshot Terminal.com API docs
   def self.delete_snapshot(user_token, access_token, snapshot_id)
     call('/delete_snapshot',
@@ -246,6 +256,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#edit-snapshot Terminal.com API docs
   def self.edit_snapshot(user_token, access_token, snapshot_id, **options)
     ensure_options_validity(options,
@@ -260,6 +271,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#snapshot-terminal Terminal.com API docs
   def self.snapshot_terminal(user_token, access_token, container_key, **options)
     ensure_options_validity(options,
@@ -270,15 +282,15 @@ module Terminal
     call('/snapshot_terminal', options)
   end
 
-  ##########################
-  # MANAGE TERMINAL ACCESS #
-  ##########################
+  # @!endgroup
+  # @!group MANAGE TERMINAL ACCESS
 
   # Add to the list of your other terminals who have access
   # to one of your Terminal instances.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#add-terminal-links Terminal.com API docs
   def self.add_terminal_links(user_token, access_token, container_key, *links)
     call('/add_terminal_links',
@@ -293,6 +305,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#remove-terminal-links Terminal.com API docs
   def self.remove_terminal_links(user_token, access_token, container_key, *links)
     call('/remove_terminal_links',
@@ -307,6 +320,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#list-terminal-access Terminal.com API docs
   def self.list_terminal_access(user_token, access_token, container_key)
     call('/list_terminal_access',
@@ -320,6 +334,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#edit-terminal-access Terminal.com API docs
   def self.edit_terminal_access(user_token, access_token, container_key, **options)
     ensure_options_validity(options, :is_public_list, :access_rules)
@@ -329,9 +344,8 @@ module Terminal
     call('/edit_terminal_access', options)
   end
 
-  #################################
-  # MANAGE TERMINAL DNS & DOMAINS #
-  #################################
+  # @!endgroup
+  # @!group MANAGE TERMINAL DNS & DOMAINS
 
   # Get a list of domains in your CNAME record pool. Domains
   # returned by this call can be associated to your Terminal
@@ -339,6 +353,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#get-cname-records Terminal.com API docs
   def self.get_cname_records(user_token, access_token)
     call('/get_cname_records',
@@ -351,6 +366,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#add-domain-to-pool Terminal.com API docs
   def self.add_domain_to_pool(user_token, access_token, domain)
     call('/add_domain_to_pool',
@@ -362,6 +378,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#remove-domain-from-pool Terminal.com API docs
   def self.remove_domain_from_pool(user_token, access_token, domain)
     call('/remove_domain_from_pool',
@@ -373,6 +390,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#add-cname-record Terminal.com API docs
   def self.add_cname_record(user_token, access_token, domain, subdomain, port)
     call('/add_cname_record',
@@ -389,6 +407,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#remove-cname-record Terminal.com API docs
   def self.remove_cname_record(user_token, access_token, domain)
     call('/remove_cname_record',
@@ -397,14 +416,14 @@ module Terminal
       domain: domain)
   end
 
-  #################################
-  # MANAGE TERMINAL IDLE SETTINGS #
-  #################################
+  # @!endgroup
+  # @!group MANAGE TERMINAL IDLE SETTINGS
 
   # Set the idle settings for your Terminal.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#set-terminal-idle-settings Terminal.com API docs
   def self.set_terminal_idle_settings(user_token, access_token, container_key, action, *triggers)
     call('/set_terminal_idle_settings',
@@ -419,6 +438,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#get-terminal-idle-settings Terminal.com API docs
   def self.get_terminal_idle_settings(user_token, access_token, container_key)
     call('/get_terminal_idle_settings',
@@ -427,9 +447,8 @@ module Terminal
       container_key: container_key)
   end
 
-  ##########################
-  # MANAGE USAGE & CREDITS #
-  ##########################
+  # @!endgroup
+  # @!group MANAGE USAGE & CREDITS
 
   # Get a list of the types of Terminals that may be started,
   # and the specifications for each type (CPU, RAM, and pricing).
@@ -437,6 +456,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#instance-types Terminal.com API docs
   def self.instance_types
     call('/instance_types', Hash.new)
@@ -447,6 +467,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#instance-price Terminal.com API docs
   def self.instance_price(instance_type, status = 'running')
     call('/instance_price', instance_type: instance_type, status: status)
@@ -456,6 +477,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#balance Terminal.com API docs
   def self.balance(user_token, access_token)
     call('/balance', user_token: user_token, access_token: access_token)
@@ -465,6 +487,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#balance-added Terminal.com API docs
   def self.balance_added(user_token, access_token)
     call('/balance_added', user_token: user_token, access_token: access_token)
@@ -476,6 +499,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#gift Terminal.com API docs
   def self.gift(user_token, access_token, email, cents)
     call('/gift',
@@ -489,6 +513,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#burn-history Terminal.com API docs
   def self.burn_history(user_token, access_token)
     call('/burn_history', user_token: user_token, access_token: access_token)
@@ -498,6 +523,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#terminal-usage-history Terminal.com API docs
   def self.terminal_usage_history(user_token, access_token)
     call('/terminal_usage_history', user_token: user_token, access_token: access_token)
@@ -507,6 +533,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#burn-state Terminal.com API docs
   def self.burn_state(user_token, access_token)
     call('/burn_state', user_token: user_token, access_token: access_token)
@@ -518,19 +545,20 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#burn-estimates Terminal.com API docs
   def self.burn_estimates(user_token, access_token)
     call('/burn_estimates', user_token: user_token, access_token: access_token)
   end
 
-  ##########################
-  # MANAGE SSH PUBLIC KEYS #
-  ##########################
+  # @!endgroup
+  # @!group MANAGE SSH PUBLIC KEYS
 
   # Add an SSH public key to a given Terminal's root user.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#add-authorized-key-to-terminal Terminal.com API docs
   def self.add_authorized_key_to_terminal(user_token, access_token, container_key, publicKey)
     call('/add_authorized_key_to_terminal',
@@ -544,6 +572,7 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#add-authorized-key-to-ssh-proxy Terminal.com API docs
   def self.add_authorized_key_to_ssh_proxy(user_token, access_token, name, publicKey)
     call('/add_authorized_key_to_ssh_proxy',
@@ -560,6 +589,7 @@ module Terminal
   # @param name         [String] TODO.
   # @param fingerprint  [String] TODO.
   # @return [Hash] xxx
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#del-authorized-key-from-ssh-proxy Terminal.com API docs
   def self.del_authorized_key_from_ssh_proxy(user_token, access_token, name, fingerprint)
     call('/del_authorized_key_from_ssh_proxy',
@@ -569,25 +599,26 @@ module Terminal
       fingerprint: fingerprint)
   end
 
-  # List the SSHs public key on our SSH proxy.
+  # List the SSH public key on our SSH proxy.
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#get-authorized-keys-from-ssh-proxy Terminal.com API docs
   def self.get_authorized_keys_from_ssh_proxy(user_token, access_token)
     call('/get_authorized_keys_from_ssh_proxy',
       user_token: user_token, access_token: access_token)
   end
 
-  #########
-  # OTHER #
-  #########
+  # @!endgroup
+  # @!group OTHER
 
   # Get information about yourself!  If invalid access/user token
   # provided, returns null (but not an error).
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#who-am-i Terminal.com API docs
   def self.who_am_i(user_token, access_token)
     call('/who_am_i', user_token: user_token, access_token: access_token)
@@ -597,21 +628,25 @@ module Terminal
   #
   # @param xxx [String] desc.
   # @return [Hash] desc.
+  # @since 0.0.1
   # @see https://www.terminal.com/api/docs#request-progress Terminal.com API docs
   def self.request_progress(request_id)
     call('/request_progress', request_id: request_id)
   end
 
-  ##################
-  # IMPLEMENTATION #
-  ##################
+  # @!endgroup
+  # @!group IMPLEMENTATION
 
   # @api private
   def self.request
     @request ||= Net::HTTP.new('api.terminal.com')
   end
 
+  # Make the HTTP call, retrieve and parse the JSON response.
+  # Rewrite this method if you wish to use a different HTTP library.
+  #
   # @api plugin
+  # @since 0.0.1
   def self.call(path, data)
     path = "/#{API_VERSION}#{path}"
     json = data.to_json
@@ -647,4 +682,6 @@ curl -L -X POST -H '#{headers}' -d '#{json}' https://api.terminal.com#{path}
       raise ArgumentError.new("Unrecognised options: #{unrecognised_options.inspect[1..-2]}")
     end
   end
+
+  # @!endgroup
 end
