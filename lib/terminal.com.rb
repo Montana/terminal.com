@@ -148,12 +148,27 @@ module Terminal
   # Start a Terminal instance based on a snapshot.
   #
   # @param (see .list_terminals)
-  # @param snapshot_id [String] desc.
-  # @param options [Hash] Provide either `container_key` or `subdomain`.
-  # @option ...
+  # @param snapshot_id [String] Snapshot ID.
+  # @param options [Hash] Configuration of the new Terminal.
+  # @option options :cpu [String] How much CPU is required.
+  #   Has to be one specified in {https://www.terminal.com/faq#instanceTypes instance types}
+  #   and corresponding `:ram` option has to be provided.
+  # @option options :ram [String] How much RAM is required.
+  #   Has to be one specified in {https://www.terminal.com/faq#instanceTypes instance types}
+  #   and corresponding `:cpu` option has to be provided.
+  # @option options :temporary [String] If the Terminal is supposed to be temporary or not.
+  #   {https://www.terminal.com/faq#temporaryTerminals Temporary Terminals} are automatically
+  #   deleted on inactivity.
+  # @option options :name [String] Terminal name.
+  # @option options :autopause [String] Whether the Terminal should be {https://www.terminal.com/faq#idleSettings auto-paused on inactivity}.
+  # @option options :startup_script [String] xx
+  # @option options :custom_data [String] xx
   # @return [Hash] The response data.
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#start-snapshot Terminal.com API docs
+  # @see https://www.terminal.com/faq#instanceTypes Terminal Instance types
+  # @see https://www.terminal.com/faq#temporaryTerminals Temporary Terminals
+  # @see https://www.terminal.com/faq#idleSettings Auto-pausing Terminals
   def self.start_snapshot(user_token, access_token, snapshot_id, **options)
     if (options[:cpu] && ! options[:ram]) || (options[:ram] && ! options[:cpu])
       raise ArgumentError.new('You have to specify both cpu and ram of the corresponding instance type as described at https://www.terminal.com/faq#instanceTypes')
