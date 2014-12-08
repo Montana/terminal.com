@@ -8,6 +8,17 @@ require 'net/http'
 require 'json'
 
 module Terminal
+  # @api plugin
+  class NetworkError < StandardError
+    attr_reader :original_error
+    def initialize(original_error)
+      @original_error = original_error
+      super <<-EOF
+Network error (#{original_error.class}): #{original_error.message}
+      EOF
+    end
+  end
+
   # The gem version.
   VERSION = '0.0.1'
 
@@ -22,12 +33,15 @@ module Terminal
   # Get information on a snapshot.
   #
   # @param snapshot_id [String] Snapshot ID (the last part of the snapshot URL).
-  # @return The response data parsed from JSON.
-  # @since 0.0.1
-  # @see https://www.terminal.com/api/docs#get-snapshot Terminal.com API docs
+  # @return [Hash] The response data parsed from JSON.
+  # @raise [Terminal::NetworkError] Any network-layer error.
+  #
   # @example
   #   Terminal.get_snapshot('987f8d702dc0a6e8158b48ccd3dec24f819a7ccb2756c396ef1fd7f5b34b7980')
   #   # {"snapshot" => {"title" => "Official Ubuntu 14.04", "tags" => "ubuntu", "createdAt" => "2014-07-23T20:27:41.743Z", ...}}
+  #
+  # @since 0.0.1
+  # @see https://www.terminal.com/api/docs#get-snapshot Terminal.com API docs
   def self.get_snapshot(snapshot_id)
     call('/get_snapshot', snapshot_id: snapshot_id)
   end
@@ -36,11 +50,14 @@ module Terminal
   #
   # @param username [String] Any registered username.
   # @return (see .get_snapshot)
-  # @since 0.0.1
-  # @see https://www.terminal.com/api/docs#get-profile Terminal.com API docs
+  # @raise (see .get_snapshot)
+  #
   # @example
   #   Terminal.get_profile('botanicus')
   #   # {"user" => {"name" => "James C Russell", "url" => "https://twitter.com/botanicus", "location" => "London, UK", ...}}
+  #
+  # @since 0.0.1
+  # @see https://www.terminal.com/api/docs#get-profile Terminal.com API docs
   def self.get_profile(username)
     call('/get_profile', username: username)
   end
@@ -57,8 +74,8 @@ module Terminal
   # @option options :perPage [String] Use with `page` for pagination.
   # @option options :sortby [String] Either `popularity` or `date`.
   # @return (see .get_snapshot)
-  # @since 0.0.1
-  # @see https://www.terminal.com/api/docs#list-public-snapshots Terminal.com API docs
+  # @raise (see .get_snapshot)
+  #
   # @example Return all the public snapshots.
   #   Terminal.list_public_snapshots
   #   # {"snapshots" => [{"title" => "Decision Tree", "tags" => "python,ipython", ...}, {...}]}
@@ -68,6 +85,9 @@ module Terminal
   #
   # @example Return the first page of the search results with 10 items per page, sorted by date.
   #   Terminal.list_public_snapshots(tag: 'ubuntu', page: 1, perPage: 10, sortby: 'date')
+  #
+  # @since 0.0.1
+  # @see https://www.terminal.com/api/docs#list-public-snapshots Terminal.com API docs
   def self.list_public_snapshots(**options)
     ensure_options_validity(options,
       :username, :tag, :featured, :title, :page, :perPage, :sortby)
@@ -83,8 +103,8 @@ module Terminal
   # @option options :featured [Boolean] Search only for featured (or non-featured).
   # @option options :title [String] Title to be *matched* against the existing snapshots.
   # @return (see .get_snapshot)
-  # @since 0.0.1
-  # @see https://www.terminal.com/api/docs#count-public-snapshots Terminal.com API docs
+  # @raise (see .get_snapshot)
+  #
   # @example Number of all the public snapshots.
   #   Terminal.count_public_snapshots
   #   # {"snapshot_count" => 474}
@@ -92,6 +112,9 @@ module Terminal
   # @example Number of all the featured snapshots.
   #   Terminal.count_public_snapshots(featured: true)
   #   # {"snapshot_count" => 135}
+  #
+  # @since 0.0.1
+  # @see https://www.terminal.com/api/docs#count-public-snapshots Terminal.com API docs
   def self.count_public_snapshots(**options)
     ensure_options_validity(options,
       :username, :tag, :featured, :title)
@@ -107,10 +130,14 @@ module Terminal
   # @param user_token [String] Your user token.
   # @param access_token [String] Your access token.
   # @return (see .get_snapshot)
-  # @see https://www.terminal.com/api/docs#list-terminals Terminal.com API docs
+  # @raise (see .get_snapshot)
+  #
   # @example
   #   Terminal.list_terminals(user_token, access_token)
   #   # {"terminals" => [{"name" => "Coding Interview: John Doe Jr", "ram" => "256", ...}, {...}]}
+  #
+  # @since 0.0.1
+  # @see https://www.terminal.com/api/docs#list-terminals Terminal.com API docs
   def self.list_terminals(user_token, access_token)
     call('/list_terminals',
       user_token: user_token, access_token: access_token)
@@ -125,8 +152,8 @@ module Terminal
   # @option options :subdomain [String] Subdomain of your Terminal (i. e. `johndoe117`).
   #   You can see it in the address bar when you're in the Terminal IDE or through {.list_terminals}.
   # @return (see .get_snapshot)
-  # @since 0.0.1
-  # @see https://www.terminal.com/api/docs#get-terminal Terminal.com API docs
+  # @raise (see .get_snapshot)
+  #
   # @example Get Terminal info with container_key.
   #   # Using get_terminal directly with list_terminals doesn't really
   #   # make sense, since you get all the data in list_terminals, so there
@@ -137,6 +164,9 @@ module Terminal
   #
   #   Terminal.get_terminal(user_token, access_token, container_key: container_key)
   #   # {"terminal" => {"name" => "Coding Interview: John Doe Jr", "ram" => "256", ...}}
+  #
+  # @since 0.0.1
+  # @see https://www.terminal.com/api/docs#get-terminal Terminal.com API docs
   def self.get_terminal(user_token, access_token, **options)
     ensure_options_validity(options, :container_key, :subdomain)
 
@@ -148,7 +178,7 @@ module Terminal
   # Start a Terminal instance based on a snapshot.
   #
   # @param (see .list_terminals)
-  # @param snapshot_id [String] Snapshot ID.
+  # @param snapshot_id [String] Snapshot ID (the last part of the snapshot URL).
   # @param options [Hash] Configuration of the new Terminal.
   # @option options :cpu [String] How much CPU is required.
   #   Has to be one specified in {https://www.terminal.com/faq#instanceTypes instance types}
@@ -164,13 +194,16 @@ module Terminal
   # @option options :startup_script [String] TODO
   # @option options :custom_data [String] TODO
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
+  # @example
+  #   # TODO
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#start-snapshot Terminal.com API docs
   # @see https://www.terminal.com/faq#instanceTypes Terminal Instance types
   # @see https://www.terminal.com/faq#temporaryTerminals Temporary Terminals
   # @see https://www.terminal.com/faq#idleSettings Auto-pausing Terminals
-  # @example
-  #   # TODO
   def self.start_snapshot(user_token, access_token, snapshot_id, **options)
     if (options[:cpu] && ! options[:ram]) || (options[:ram] && ! options[:cpu])
       raise ArgumentError.new('You have to specify both cpu and ram of the corresponding instance type as described at https://www.terminal.com/faq#instanceTypes')
@@ -189,6 +222,8 @@ module Terminal
   # @param (see .list_terminals)
   # @param container_key [String] A valid container key. You can get it through {.list_terminals}.
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#delete-terminal Terminal.com API docs
   def self.delete_terminal(user_token, access_token, container_key)
@@ -200,6 +235,8 @@ module Terminal
   #
   # @param (see .delete_terminal)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#restart-terminal Terminal.com API docs
   def self.restart_terminal(user_token, access_token, container_key)
@@ -213,6 +250,8 @@ module Terminal
   #
   # @param (see .delete_terminal)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#pause-terminal Terminal.com API docs
   def self.pause_terminal(user_token, access_token, container_key)
@@ -226,6 +265,8 @@ module Terminal
   #
   # @param (see .delete_terminal)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#resume-terminal Terminal.com API docs
   def self.resume_terminal(user_token, access_token, container_key)
@@ -246,11 +287,14 @@ module Terminal
   # @option options :diskspace [String] How much diskspace is required. TODO: what are the options?
   # @option options :name [String] Terminal name.
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
+  # @example
+  #   # TODO
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#edit-terminal Terminal.com API docs
   # @see https://www.terminal.com/faq#instanceTypes Terminal Instance types
-  # @example
-  #   # TODO
   def self.edit_terminal(user_token, access_token, container_key, **options)
     ensure_options_validity(options,
       :cpu, :ram, :diskspace, :name)
@@ -278,8 +322,7 @@ module Terminal
   # @option options :perPage [String] Use with `page` for pagination.
   # @option options :sortby [String] Either `popularity` or `date`. TODO: Does it have this one?
   # @return (see .get_snapshot)
-  # @since 0.0.1
-  # @see https://www.terminal.com/api/docs#list-snapshots Terminal.com API docs
+  # @raise (see .get_snapshot)
   #
   # TODO: Redo examples.
   # @example Return all the public snapshots.
@@ -291,6 +334,9 @@ module Terminal
   #
   # @example Return the first page of the search results with 10 items per page, sorted by date.
   #   Terminal.list_public_snapshots(tag: 'ubuntu', page: 1, perPage: 10, sortby: 'date')
+
+  # @since 0.0.1
+  # @see https://www.terminal.com/api/docs#list-snapshots Terminal.com API docs
   def self.list_snapshots(user_token, access_token, **options)
     ensure_options_validity(options,
       :username, :tag, :featured, :title, :page, :perPage)
@@ -308,8 +354,8 @@ module Terminal
   # @param options [Hash] Filtering options.
   # @option options (see .count_public_snapshots)
   # @return (see .get_snapshot)
-  # @since 0.0.1
-  # @see https://www.terminal.com/api/docs#count-snapshots Terminal.com API docs
+  # @raise (see .get_snapshot)
+  #
   # TODO: Rework the examples.
   # @example Number of all the public snapshots.
   #   Terminal.count_public_snapshots
@@ -318,6 +364,9 @@ module Terminal
   # @example Number of all the featured snapshots.
   #   Terminal.count_public_snapshots(featured: true)
   #   # {"snapshot_count" => 135}
+  #
+  # @since 0.0.1
+  # @see https://www.terminal.com/api/docs#count-snapshots Terminal.com API docs
   def self.count_snapshots(user_token, access_token, **options)
     ensure_options_validity(options,
       :username, :tag, :featured, :title)
@@ -330,8 +379,10 @@ module Terminal
   # Delete a snapshot from your account. This cannot be undone.
   #
   # @param (see .list_terminals)
-  # @param snapshot_id [String] Snapshot ID.
+  # @param snapshot_id [String] Snapshot ID (the last part of the snapshot URL).
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#delete-snapshot Terminal.com API docs
   def self.delete_snapshot(user_token, access_token, snapshot_id)
@@ -352,6 +403,8 @@ module Terminal
   # @option options :public [Boolean] Whether the snapshot will be accessible by other users.
   # @option options :custom_data [String] TODO.
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#edit-snapshot Terminal.com API docs
   def self.edit_snapshot(user_token, access_token, snapshot_id, **options)
@@ -369,6 +422,8 @@ module Terminal
   # @param options [Hash] Snapshot metadata.
   # @option options (see .edit_snapshot)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#snapshot-terminal Terminal.com API docs
   def self.snapshot_terminal(user_token, access_token, container_key, **options)
@@ -383,15 +438,17 @@ module Terminal
   # @!endgroup
   # @!group MANAGE TERMINAL ACCESS
 
-  # Add to the list of your other terminals who have access
+  # Add to the list of your other Terminals who have access
   # to one of your Terminal instances.
   #
   # @param (see .delete_terminal)
-  # @param links [Array<String>] TODO: what's the format of links?
+  # @param links [Array<Hash>] Links are hashes with keys `port` and `source`.
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#add-terminal-links Terminal.com API docs
-  # @see TODO FAQ
+  # TODO: What is this for?
   def self.add_terminal_links(user_token, access_token, container_key, *links)
     call('/add_terminal_links',
       user_token: user_token,
@@ -400,14 +457,17 @@ module Terminal
       links: links)
   end
 
-  # Remove from the list of terminals who have access to one
+  # Remove from the list of Terminals who have access to one
   # of your Terminal instances.
   #
   # @param (see .add_terminal_links)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#remove-terminal-links Terminal.com API docs
   # @see TODO FAQ
+  # TODO: What is this for?
   def self.remove_terminal_links(user_token, access_token, container_key, *links)
     call('/remove_terminal_links',
       user_token: user_token,
@@ -421,9 +481,11 @@ module Terminal
   #
   # @param (see .delete_terminal)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#list-terminal-access Terminal.com API docs
-  # @see TODO FAQ
+  # @see https://www.terminal.com/faq#terminalAccess Terminal.com FAQ: Terminal access
   def self.list_terminal_access(user_token, access_token, container_key)
     call('/list_terminal_access',
       user_token: user_token,
@@ -439,9 +501,12 @@ module Terminal
   # @option options :is_public_list [TODO] TODO
   # @option options :access_rules [TODO] TODO
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#edit-terminal-access Terminal.com API docs
-  # @see TODO FAQ
+  # @see https://www.terminal.com/faq#terminalAccess Terminal.com FAQ: Terminal access
+  # @see https://www.terminal.com/faq#openPorts Terminal.com FAQ: Opening additional ports
   def self.edit_terminal_access(user_token, access_token, container_key, **options)
     ensure_options_validity(options, :is_public_list, :access_rules)
 
@@ -459,9 +524,11 @@ module Terminal
   #
   # @param (see .list_terminals)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#get-cname-records Terminal.com API docs
-  # @see TODO FAQ
+  # @see https://www.terminal.com/faq#cname Terminal.com FAQ: Using my own domains for my Terminals?
   def self.get_cname_records(user_token, access_token)
     call('/get_cname_records',
       user_token: user_token, access_token: access_token)
@@ -474,9 +541,11 @@ module Terminal
   # @param (see .list_terminals)
   # @param domain [String] A domain (i. e. `101ideas.cz`).
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#add-domain-to-pool Terminal.com API docs
-  # @see TODO FAQ
+  # @see https://www.terminal.com/faq#cname Terminal.com FAQ: Using my own domains for my Terminals?
   def self.add_domain_to_pool(user_token, access_token, domain)
     call('/add_domain_to_pool',
       user_token: user_token, access_token: access_token, domain: domain)
@@ -487,9 +556,11 @@ module Terminal
   #
   # @param (see .add_domain_to_pool)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#remove-domain-from-pool Terminal.com API docs
-  # @see TODO FAQ
+  # @see https://www.terminal.com/faq#cname Terminal.com FAQ: Using my own domains for my Terminals?
   def self.remove_domain_from_pool(user_token, access_token, domain)
     call('/remove_domain_from_pool',
       user_token: user_token, access_token: access_token, domain: domain)
@@ -502,9 +573,11 @@ module Terminal
   # @param subdomain [String] TODO.
   # @param port [String] TODO.
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#add-cname-record Terminal.com API docs
-  # @see TODO FAQ
+  # @see https://www.terminal.com/faq#cname Terminal.com FAQ: Using my own domains for my Terminals?
   def self.add_cname_record(user_token, access_token, domain, subdomain, port)
     call('/add_cname_record',
       user_token: user_token,
@@ -520,9 +593,11 @@ module Terminal
   #
   # @param (see .add_domain_to_pool)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#remove-cname-record Terminal.com API docs
-  # @see TODO FAQ
+  # @see https://www.terminal.com/faq#cname Terminal.com FAQ: Using my own domains for my Terminals?
   def self.remove_cname_record(user_token, access_token, domain)
     call('/remove_cname_record',
       user_token: user_token,
@@ -539,9 +614,11 @@ module Terminal
   # @param action [String] desc.
   # @param triggers [Array<String>] desc.
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#set-terminal-idle-settings Terminal.com API docs
-  # @see TODO FAQ
+  # @see https://www.terminal.com/faq#idleSettings Terminal.com FAQ: Idle settings
   def self.set_terminal_idle_settings(user_token, access_token, container_key, action, *triggers)
     call('/set_terminal_idle_settings',
       user_token: user_token,
@@ -555,9 +632,11 @@ module Terminal
   #
   # @param (see .delete_terminal)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#get-terminal-idle-settings Terminal.com API docs
-  # @see TODO FAQ
+  # @see https://www.terminal.com/faq#idleSettings Terminal.com FAQ: Idle settings
   def self.get_terminal_idle_settings(user_token, access_token, container_key)
     call('/get_terminal_idle_settings',
       user_token: user_token,
@@ -573,8 +652,13 @@ module Terminal
   # This endpoint does not require authentication.
   #
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#instance-types Terminal.com API docs
+  # @example
+  #   Terminal.instance_types
+  #   # TODO
   def self.instance_types
     call('/instance_types', Hash.new)
   end
@@ -585,6 +669,12 @@ module Terminal
   # @param instance_type [String] desc.
   # @param status [String] Defaults to `running`.
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
+  # @example
+  #   Terminal.instance_types
+  #   # TODO
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#instance-price Terminal.com API docs
   def self.instance_price(instance_type, status = 'running')
@@ -595,6 +685,12 @@ module Terminal
   #
   # @param (see .list_terminals)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
+  # @example
+  #   Terminal.instance_types
+  #   # TODO
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#balance Terminal.com API docs
   def self.balance(user_token, access_token)
@@ -605,6 +701,12 @@ module Terminal
   #
   # @param (see .list_terminals)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
+  # @example
+  #   Terminal.instance_types
+  #   # TODO
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#balance-added Terminal.com API docs
   def self.balance_added(user_token, access_token)
@@ -619,6 +721,8 @@ module Terminal
   # @param email [String] desc.
   # @param cents [String] desc.
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#gift Terminal.com API docs
   def self.gift(user_token, access_token, email, cents)
@@ -633,6 +737,12 @@ module Terminal
   #
   # @param (see .list_terminals)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
+  # @example
+  #   Terminal.instance_types
+  #   # TODO
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#burn-history Terminal.com API docs
   def self.burn_history(user_token, access_token)
@@ -643,6 +753,12 @@ module Terminal
   #
   # @param (see .list_terminals)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
+  # @example
+  #   Terminal.instance_types
+  #   # TODO
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#terminal-usage-history Terminal.com API docs
   def self.terminal_usage_history(user_token, access_token)
@@ -653,6 +769,12 @@ module Terminal
   #
   # @param (see .list_terminals)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
+  # @example
+  #   Terminal.instance_types
+  #   # TODO
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#burn-state Terminal.com API docs
   def self.burn_state(user_token, access_token)
@@ -665,6 +787,12 @@ module Terminal
   #
   # @param (see .list_terminals)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
+  # @example
+  #   Terminal.instance_types
+  #   # TODO
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#burn-estimates Terminal.com API docs
   def self.burn_estimates(user_token, access_token)
@@ -679,6 +807,8 @@ module Terminal
   # @param (see .delete_terminal)
   # @param publicKey [String] desc.
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#add-authorized-key-to-terminal Terminal.com API docs
   def self.add_authorized_key_to_terminal(user_token, access_token, container_key, publicKey)
@@ -695,6 +825,8 @@ module Terminal
   # @param name [String] desc.
   # @param publicKey [String] desc.
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#add-authorized-key-to-ssh-proxy Terminal.com API docs
   def self.add_authorized_key_to_ssh_proxy(user_token, access_token, name, publicKey)
@@ -711,6 +843,8 @@ module Terminal
   # @param name         [String] TODO.
   # @param fingerprint  [String] TODO.
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#del-authorized-key-from-ssh-proxy Terminal.com API docs
   def self.del_authorized_key_from_ssh_proxy(user_token, access_token, name, fingerprint)
@@ -725,6 +859,8 @@ module Terminal
   #
   # @param (see .list_terminals)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#get-authorized-keys-from-ssh-proxy Terminal.com API docs
   def self.get_authorized_keys_from_ssh_proxy(user_token, access_token)
@@ -740,6 +876,12 @@ module Terminal
   #
   # @param (see .list_terminals)
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
+  # @example
+  #   Terminal.who_am_i
+  #   # TODO
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#who-am-i Terminal.com API docs
   def self.who_am_i(user_token, access_token)
@@ -750,6 +892,8 @@ module Terminal
   #
   # @param request_id [String] desc.
   # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#request-progress Terminal.com API docs
   def self.request_progress(request_id)
@@ -767,6 +911,10 @@ module Terminal
   # Make the HTTP call, retrieve and parse the JSON response.
   # Rewrite this method if you wish to use a different HTTP library.
   #
+  # @raise [Terminal::NetworkError] Any network-layer error.
+  #   It's important that plugins make sure to wrap their potential
+  #   exceptions in Terminal::NetworkError for predictable behaviour.
+  #
   # @api plugin
   # @since 0.0.1
   def self.call(path, data)
@@ -781,6 +929,8 @@ module Terminal
     return JSON.parse(response.body) if status == 200
 
     raise "Unexpected status #{status}: #{response.inspect}"
+  rescue SocketError => error
+    raise NetworkError.new(error)
   end
 
   # @api private
