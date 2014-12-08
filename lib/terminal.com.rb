@@ -200,13 +200,17 @@ Network error (#{original_error.class}): #{original_error.message}
   # @option options :autopause [String] Whether the Terminal should be {https://www.terminal.com/faq#idleSettings auto-paused on inactivity}.
   #   This can be edited later using {.set_terminal_idle_settings}.
   # @option options :startup_script [String] TODO
-  # @option options :custom_data [String] TODO
+  # @option options :custom_data [String] Metadata of your Terminal. Anything you need. It will be accessible through {.get_terminal},
+  #   but not from within the Terminal itself.
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   # @raise [ArgumentError] If either `ram` or `cpu` is specified. These options has to come together.
   #
   # @example
-  #   # TODO
+  #   response = Terminal.start_snapshot(user_token, access_token, "57eff3574ac8d438224dc3aa1c6431a0dbac849a0c254e89be2e758d8113c234", name: "Test")
+  #   # {"request_id" => "1418068796272::james@101ideas.cz:create:234509::333c43ab-f6cc-41a3-8307-0fcc4ea3cfb5"}
+  #   Terminal.request_progress(response['request_id'])
+  #   # {"operation" => "create", "status" => "success", ... }
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#start-snapshot Terminal.com API docs
@@ -288,22 +292,25 @@ Network error (#{original_error.class}): #{original_error.message}
   # @option options :cpu [String] How much CPU is required.
   #   Has to be one of the available {https://www.terminal.com/faq#instanceTypes instance types}
   #   and corresponding `:ram` option has to be provided.
+  #   This option is required.
   # @option options :ram [String] How much RAM is required.
   #   Has to be one of the available {https://www.terminal.com/faq#instanceTypes instance types}
   #   and corresponding `:cpu` option has to be provided.
-  # @option options :diskspace [String] How much diskspace is required.
+  #   This option is required.
+  # @option options :diskspace [String] How much diskspace is required. If you want to set to more than 20 GB, you need 25 MB of ram per GB.
   # @option options :name [String] Terminal name.
   # @return (see .get_snapshot)
   # @raise (see .start_snapshot)
   #
   # @example
-  #   # TODO
-  #
+  #   Terminal.edit_terminal(user_token, access_token, "f9954bd3-5da1-4e17-a688-7791d87ceb6e", cpu: "50", ram: "800", diskspace: "10")
+  #   # {"status": "success", "request_id": "1418071005245::james@101ideas.cz:edit:234583::d86c5b44-f716-45d1-85d2-9968fdda15d6"}
+
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#edit-terminal Terminal.com API docs
   # @see https://www.terminal.com/faq#instanceTypes Terminal Instance types
   def self.edit_terminal(user_token, access_token, container_key, **options)
-    ensure_both_cpu_and_ram_are_provided(options)
+    ensure_both_cpu_and_ram_are_provided(options, required: true)
 
     ensure_options_validity(options,
       :cpu, :ram, :diskspace, :name)
@@ -965,8 +972,8 @@ curl -L -X POST -H '#{headers}' -d '#{json}' https://api.terminal.com#{path}
   end
 
   # @api private
-  def self.ensure_both_cpu_and_ram_are_provided(options)
-    if (options[:cpu] && ! options[:ram]) || (options[:ram] && ! options[:cpu])
+  def self.ensure_both_cpu_and_ram_are_provided(options, meta_options = Hash.new)
+    if (options[:cpu] && ! options[:ram]) || (options[:ram] && ! options[:cpu]) || (meta_options[:required] && ! options[:cpu])
       raise ArgumentError.new('You have to specify both cpu and ram of the corresponding instance type as described at https://www.terminal.com/faq#instanceTypes')
     end
   end
