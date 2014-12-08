@@ -8,16 +8,6 @@ require 'net/http'
 require 'json'
 
 module Terminal
-  # @api plugin
-  class NetworkError < StandardError
-    attr_reader :original_error
-    def initialize(original_error)
-      @original_error = original_error
-      super <<-EOF
-Network error (#{original_error.class}): #{original_error.message}
-      EOF
-    end
-  end
 
   # The gem version.
   VERSION = '0.0.1'
@@ -27,6 +17,24 @@ Network error (#{original_error.class}): #{original_error.message}
 
   # The default headers for the requests.
   HEADERS = {'Content-Type' => 'application/json'}
+
+  # Any network error that can potentially occur in Terminal.call
+  # should be encapsulated in this. See {Terminal.call} for implementation
+  # details.
+  #
+  # @api plugin
+  class NetworkError < StandardError
+    attr_reader :original_error
+
+    # @param original_error [Exception] The exception raised by an HTTP library.
+    # @see Terminal.call
+    def initialize(original_error)
+      @original_error = original_error
+      super <<-EOF
+Network error (#{original_error.class}): #{original_error.message}
+      EOF
+    end
+  end
 
   # @!group BROWSE SNAPSHOTS & USERS
 
@@ -48,7 +56,7 @@ Network error (#{original_error.class}): #{original_error.message}
 
   # Get information on a user.
   #
-  # @param username [String] Any registered username.
+  # @param username [String] Any valid username (i. e. `botanicus`).
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   #
@@ -62,14 +70,38 @@ Network error (#{original_error.class}): #{original_error.message}
     call('/get_profile', username: username)
   end
 
-  # Get a list of public snapshots, optionally filtered
-  # and/or paginated.
+  # Get a count of public snapshots, optionally filtered.
   #
-  # @param options [Hash] Filtering and pagination options.
+  # @param options [Hash] Filtering options.
   # @option options :username [String] Any valid username (i. e. `botanicus`).
   # @option options :tag [String] Any tag (i. e. `ubuntu`).
   # @option options :featured [Boolean] Search only for featured (or non-featured).
   # @option options :title [String] Title to be *matched* against the existing snapshots.
+  # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
+  # @example Count of all the public snapshots.
+  #   Terminal.count_public_snapshots
+  #   # {"snapshot_count" => 474}
+  #
+  # @example Count of all the featured snapshots.
+  #   Terminal.count_public_snapshots(featured: true)
+  #   # {"snapshot_count" => 135}
+  #
+  # @since 0.0.1
+  # @see https://www.terminal.com/api/docs#count-public-snapshots Terminal.com API docs
+  def self.count_public_snapshots(**options)
+    ensure_options_validity(options,
+      :username, :tag, :featured, :title)
+
+    call('/count_public_snapshots', options)
+  end
+
+  # Get a list of public snapshots, optionally filtered
+  # and/or paginated.
+  #
+  # @param options [Hash] Filtering and pagination options.
+  # @option options (see .count_public_snapshots)
   # @option options :page [String] Use with `perPage` for pagination.
   # @option options :perPage [String] Use with `page` for pagination.
   # @option options :sortby [String] Either `popularity` or `date`.
@@ -93,33 +125,6 @@ Network error (#{original_error.class}): #{original_error.message}
       :username, :tag, :featured, :title, :page, :perPage, :sortby)
 
     call('/list_public_snapshots', options)
-  end
-
-  # Get a count of public snapshots, optionally filtered.
-  #
-  # @param options [Hash] Filtering options.
-  # @option options :username [String] Any valid username (i. e. `botanicus`).
-  # @option options :tag [String] Any tag (i. e. `ubuntu`).
-  # @option options :featured [Boolean] Search only for featured (or non-featured).
-  # @option options :title [String] Title to be *matched* against the existing snapshots.
-  # @return (see .get_snapshot)
-  # @raise (see .get_snapshot)
-  #
-  # @example Number of all the public snapshots.
-  #   Terminal.count_public_snapshots
-  #   # {"snapshot_count" => 474}
-  #
-  # @example Number of all the featured snapshots.
-  #   Terminal.count_public_snapshots(featured: true)
-  #   # {"snapshot_count" => 135}
-  #
-  # @since 0.0.1
-  # @see https://www.terminal.com/api/docs#count-public-snapshots Terminal.com API docs
-  def self.count_public_snapshots(**options)
-    ensure_options_validity(options,
-      :username, :tag, :featured, :title)
-
-    call('/count_public_snapshots', options)
   end
 
   # @!endgroup
