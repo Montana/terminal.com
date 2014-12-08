@@ -117,6 +117,37 @@ Run `terminal.com configure` and follow the instructions.
 
 ![](docs/terminal-com-configure.png)
 
+# Development
+
+## Architecture of the Test Suite
+
+The tests don't run against Terminal.com every single time. This is because:
+
+- It would take a long time, starting all those Terminals, snapshotting them etc.
+- The setup would just take too long. For instance for testing `list_terminals`, we'd ideally have to delete all the Terminals, then create a few and then test the result.
+
+So this test suite doesn't test the live API. It test only the library itself through testing VCR-cached responses. Many tests will "break" if you delete the VCR files.
+
+Using VCR provides additional benefits:
+
+- You can see _exactly_ which request was fired and what was the exact response. No magic.
+
+## Running Tests
+
+Running `bundle exec rspec` will run either all the examples, or, if there is one or more example tagged with `:focus`, then it will run only those.
+
+_**Hint:** use `fit` or `fdescribe` to easily add focus to a given example or example group._
+
+## Documentation Server
+
+We are using [YARD](http://yardoc.org) for generating API documentation.
+
+If you want to preview the documentation, run  `yard server --reload`.
+
+## Releasing New Version
+
+_**TODO:** There should be some task for this._
+
 # Links
 
 - [Terminal.com API docs](https://www.terminal.com/api/docs)
