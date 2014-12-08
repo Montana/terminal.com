@@ -213,7 +213,7 @@ Network error (#{original_error.class}): #{original_error.message}
   # @see .edit_terminal
   # @see .set_terminal_idle_settings
   def self.start_snapshot(user_token, access_token, snapshot_id, **options)
-    ensure_both_cpu_and_ram_are_provided
+    ensure_both_cpu_and_ram_are_provided(options)
     ensure_options_validity(options,
       :cpu, :ram, :temporary, :name, :autopause, :startup_script, :custom_data)
 
@@ -302,7 +302,7 @@ Network error (#{original_error.class}): #{original_error.message}
   # @see https://www.terminal.com/api/docs#edit-terminal Terminal.com API docs
   # @see https://www.terminal.com/faq#instanceTypes Terminal Instance types
   def self.edit_terminal(user_token, access_token, container_key, **options)
-    ensure_both_cpu_and_ram_are_provided
+    ensure_both_cpu_and_ram_are_provided(options)
 
     ensure_options_validity(options,
       :cpu, :ram, :diskspace, :name)
@@ -964,7 +964,7 @@ curl -L -X POST -H '#{headers}' -d '#{json}' https://api.terminal.com#{path}
   end
 
   # @api private
-  def self.ensure_both_cpu_and_ram_are_provided
+  def self.ensure_both_cpu_and_ram_are_provided(options)
     if (options[:cpu] && ! options[:ram]) || (options[:ram] && ! options[:cpu])
       raise ArgumentError.new('You have to specify both cpu and ram of the corresponding instance type as described at https://www.terminal.com/faq#instanceTypes')
     end
