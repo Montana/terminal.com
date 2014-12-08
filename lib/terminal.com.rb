@@ -153,13 +153,14 @@ Network error (#{original_error.class}): #{original_error.message}
   #
   # @param (see .list_terminals)
   # @param options [Hash] Provide either `container_key` or `subdomain`.
-  # @option options :container_key [String] A valid container key. You can get it through {.list_terminals}.
+  # @option options :container_key [String] A valid container key.
+  #   You can get it through {.list_terminals}.
   # @option options :subdomain [String] Subdomain of your Terminal (i. e. `johndoe117`).
   #   You can see it in the address bar when you're in the Terminal IDE or through {.list_terminals}.
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   #
-  # @example Get Terminal info with container_key.
+  # @example Get Terminal info with a container_key.
   #   # Using get_terminal directly with list_terminals doesn't really
   #   # make sense, since you get all the data in list_terminals, so there
   #   # is no need to call get_terminal. This is just to show how you
@@ -186,20 +187,22 @@ Network error (#{original_error.class}): #{original_error.message}
   # @param snapshot_id [String] Snapshot ID (the last part of the snapshot URL).
   # @param options [Hash] Configuration of the new Terminal.
   # @option options :cpu [String] How much CPU is required.
-  #   Has to be one specified in {https://www.terminal.com/faq#instanceTypes instance types}
+  #   Has to be one of the available {https://www.terminal.com/faq#instanceTypes instance types}
   #   and corresponding `:ram` option has to be provided.
   # @option options :ram [String] How much RAM is required.
-  #   Has to be one specified in {https://www.terminal.com/faq#instanceTypes instance types}
+  #   Has to be one of the available {https://www.terminal.com/faq#instanceTypes instance types}
   #   and corresponding `:cpu` option has to be provided.
   # @option options :temporary [String] If the Terminal is supposed to be temporary or not.
   #   {https://www.terminal.com/faq#temporaryTerminals Temporary Terminals} are automatically
   #   deleted on inactivity.
   # @option options :name [String] Terminal name.
   # @option options :autopause [String] Whether the Terminal should be {https://www.terminal.com/faq#idleSettings auto-paused on inactivity}.
+  #   This can be edited later using {.set_terminal_idle_settings}.
   # @option options :startup_script [String] TODO
   # @option options :custom_data [String] TODO
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
+  # @raise [ArgumentError] If either `ram` or `cpu` is specified. These options has to come together.
   #
   # @example
   #   # TODO
@@ -207,13 +210,10 @@ Network error (#{original_error.class}): #{original_error.message}
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#start-snapshot Terminal.com API docs
   # @see https://www.terminal.com/faq#instanceTypes Terminal Instance types
-  # @see https://www.terminal.com/faq#temporaryTerminals Temporary Terminals
-  # @see https://www.terminal.com/faq#idleSettings Auto-pausing Terminals
+  # @see .edit_terminal
+  # @see .set_terminal_idle_settings
   def self.start_snapshot(user_token, access_token, snapshot_id, **options)
-    if (options[:cpu] && ! options[:ram]) || (options[:ram] && ! options[:cpu])
-      raise ArgumentError.new('You have to specify both cpu and ram of the corresponding instance type as described at https://www.terminal.com/faq#instanceTypes')
-    end
-
+    ensure_both_cpu_and_ram_are_provided
     ensure_options_validity(options,
       :cpu, :ram, :temporary, :name, :autopause, :startup_script, :custom_data)
 
@@ -225,7 +225,8 @@ Network error (#{original_error.class}): #{original_error.message}
   # Delete a Terminal instance.
   #
   # @param (see .list_terminals)
-  # @param container_key [String] A valid container key. You can get it through {.list_terminals}.
+  # @param container_key [String] A valid container key.
+  #   You can get it through {.list_terminals}.
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   #
@@ -284,15 +285,15 @@ Network error (#{original_error.class}): #{original_error.message}
   # @param (see .delete_terminal)
   # @param options [Hash] New Terminal configuration.
   # @option options :cpu [String] How much CPU is required.
-  #   Has to be one specified in {https://www.terminal.com/faq#instanceTypes instance types}
+  #   Has to be one of the available {https://www.terminal.com/faq#instanceTypes instance types}
   #   and corresponding `:ram` option has to be provided.
   # @option options :ram [String] How much RAM is required.
-  #   Has to be one specified in {https://www.terminal.com/faq#instanceTypes instance types}
+  #   Has to be one of the available {https://www.terminal.com/faq#instanceTypes instance types}
   #   and corresponding `:cpu` option has to be provided.
-  # @option options :diskspace [String] How much diskspace is required. TODO: what are the options?
+  # @option options :diskspace [String] How much diskspace is required.
   # @option options :name [String] Terminal name.
   # @return (see .get_snapshot)
-  # @raise (see .get_snapshot)
+  # @raise (see .start_snapshot)
   #
   # @example
   #   # TODO
@@ -301,6 +302,8 @@ Network error (#{original_error.class}): #{original_error.message}
   # @see https://www.terminal.com/api/docs#edit-terminal Terminal.com API docs
   # @see https://www.terminal.com/faq#instanceTypes Terminal Instance types
   def self.edit_terminal(user_token, access_token, container_key, **options)
+    ensure_both_cpu_and_ram_are_provided
+
     ensure_options_validity(options,
       :cpu, :ram, :diskspace, :name)
 
@@ -957,6 +960,13 @@ curl -L -X POST -H '#{headers}' -d '#{json}' https://api.terminal.com#{path}
 
     unless unrecognised_options.empty?
       raise ArgumentError.new("Unrecognised options: #{unrecognised_options.inspect[1..-2]}")
+    end
+  end
+
+  # @api private
+  def self.ensure_both_cpu_and_ram_are_provided
+    if (options[:cpu] && ! options[:ram]) || (options[:ram] && ! options[:cpu])
+      raise ArgumentError.new('You have to specify both cpu and ram of the corresponding instance type as described at https://www.terminal.com/faq#instanceTypes')
     end
   end
 
