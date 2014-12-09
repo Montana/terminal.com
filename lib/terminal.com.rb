@@ -338,15 +338,15 @@ Network error (#{original_error.class}): #{original_error.message}
   # @raise (see .get_snapshot)
   #
   # @example Return all the snapshots owned by your account.
-  #   Terminal.list_snapshots
+  #   Terminal.list_snapshots(user_token, access_token)
   #   # {"snapshots" => [{"title" => "Decision Tree", "tags" => "python,ipython", ...}, {...}]}
   #
-  # @example Return all the featured snapshots owned by your account from user botanicus.
-  #   Terminal.list_snapshots(username: 'botanicus', featured: true)
+  # @example Return all the featured snapshots owned by your account.
+  #   Terminal.list_snapshots(user_token, access_token, featured: true)
   #
   # @example Return the first page of the search results with 10 items per page, sorted by date.
-  #   Terminal.list_snapshots(tag: 'ubuntu', page: 1, perPage: 10, sortby: 'date')
-
+  #   Terminal.list_snapshots(user_token, access_token, tag: 'ubuntu', page: 1, perPage: 10, sortby: 'date')
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#list-snapshots Terminal.com API docs
   def self.list_snapshots(user_token, access_token, **options)
@@ -368,13 +368,13 @@ Network error (#{original_error.class}): #{original_error.message}
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   #
-  # @example Number of all the public snapshots.
-  #   Terminal.count_public_snapshots
-  #   # {"snapshot_count" => 474}
+  # @example Number of all the snapshots owned by your account.
+  #   Terminal.count_snapshots(user_token, access_token)
+  #   # {"snapshot_count" => 12}
   #
-  # @example Number of all the featured snapshots.
-  #   Terminal.count_public_snapshots(featured: true)
-  #   # {"snapshot_count" => 135}
+  # @example Number of all the featured snapshots owned by your account.
+  #   Terminal.count_public_snapshots(user_token, access_token, featured: true)
+  #   # {"snapshot_count" => 2}
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#count-snapshots Terminal.com API docs
@@ -458,8 +458,15 @@ Network error (#{original_error.class}): #{original_error.message}
   #
   # @param (see .delete_terminal)
   # @param links [Array<Hash>] Links are hashes with keys `port` and `source`.
+  #   Port is any port number and source is any subdomain (i. e. `botanicus117`).
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
+  #
+  # @example
+  #   container_key = "1123587c-7aec-4b91-90c1-2de534033989"
+  #   link = {port: 3000, source: "botanicus117"}
+  #   Terminal.add_terminal_links(user_token, access_token, container_key, link)
+  #   # {"status":"success"}
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#add-terminal-links Terminal.com API docs
