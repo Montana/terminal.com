@@ -6,6 +6,7 @@
 
 require 'net/http'
 require 'json'
+require 'time'
 
 module Terminal
 
@@ -199,7 +200,8 @@ Network error (#{original_error.class}): #{original_error.message}
   # @option options :name [String] Terminal name.
   # @option options :autopause [String] Whether the Terminal should be {https://www.terminal.com/faq#idleSettings auto-paused on inactivity}.
   #   This can be edited later using {.set_terminal_idle_settings}.
-  # @option options :startup_script [String] TODO
+  # @option options :startup_script [String] Shell script to be run once the Terminal is ready.
+  #   As of now it cannot contain newlines, so setting a different interpreter than `/bin/sh` is impossible.
   # @option options :custom_data [String] Metadata of your Terminal. Anything you need. It will be accessible through {.get_terminal},
   #   but not from within the Terminal itself.
   # @return (see .get_snapshot)
@@ -942,7 +944,7 @@ Network error (#{original_error.class}): #{original_error.message}
     response = request.post(path, json, HEADERS)
     status   = response.code.to_i
 
-    return JSON.parse(response.body) if status == 200
+    return parse_json(response.body) if status == 200
 
     raise "Unexpected status #{status}: #{response.inspect}"
   rescue SocketError => error
@@ -960,6 +962,25 @@ Network error (#{original_error.class}): #{original_error.message}
     STDERR.puts <<-EOF
 curl -L -X POST -H '#{headers}' -d '#{json}' https://api.terminal.com#{path}
     EOF
+  end
+
+  # @api private
+  def self.parse_json(json)
+    convert_timestamps_to_time(JSON.parse(json))
+  end
+
+  # We are ignoring timestamps in arrays since there are none in the API.
+  # Also, JSON document doesn't have to be an object, but in Terminal.com API,
+  # they all are.
+  # @api private
+  def self.convert_timestamps_to_time(hash)
+    hash.each do |key, value|
+      if value.is_a?(Hash)
+        convert_timestamps_to_time(value)
+      elsif value.is_a?(String) && value.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z$/)
+        hash[key] = Time.parse(value)
+      end
+    end
   end
 
   # @api private
