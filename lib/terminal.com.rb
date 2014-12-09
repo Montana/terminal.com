@@ -76,7 +76,6 @@ Network error (#{original_error.class}): #{original_error.message}
   # @param options [Hash] Filtering options.
   # @option options :username [String] Any valid username (i. e. `botanicus`).
   # @option options :tag [String] Any tag (i. e. `ubuntu`).
-  # @option options :tags [Array] List of tags. Currently it searches against any of the tags rather than all of them.
   # @option options :featured [true, false] Search only for featured (or non-featured).
   # @option options :title [String] Title to be *matched* against the existing snapshots.
   # @return (see .get_snapshot)
@@ -94,7 +93,7 @@ Network error (#{original_error.class}): #{original_error.message}
   # @see https://www.terminal.com/api/docs#count-public-snapshots Terminal.com API docs
   def self.count_public_snapshots(**options)
     ensure_options_validity(options,
-      :username, :tag, :tags, :featured, :title)
+      :username, :tag, :featured, :title)
 
     call('/count_public_snapshots', options)
   end
