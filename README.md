@@ -21,7 +21,7 @@ The library uses `net/http` for network communication. Writing an adapter for a 
 
 2. Get your `user_token` and `access_token` from [your settings](https://www.terminal.com/settings/api).
 
-![](docs/terminal-com-api-keys.png)
+![](https://raw.githubusercontent.com/botanicus/terminal.com/master/docs/terminal-com-api-keys.png)
 
 # API
 
@@ -91,7 +91,7 @@ Arguments are mapped exactly the same way as in the Ruby API:
 - Strings: `--tag=ruby`.
 - Integers `--ram=256`.
 
-![](docs/terminal-cli-client.png)
+![](https://raw.githubusercontent.com/botanicus/terminal.com/master/docs/terminal-cli-client.png)
 
 ## Without Configuration
 
@@ -115,7 +115,7 @@ terminal.com list_terminals
 
 Run `terminal.com configure` and follow the instructions.
 
-![](docs/terminal-com-configure.png)
+![](https://raw.githubusercontent.com/botanicus/terminal.com/master/docs/terminal-com-configure.png)
 
 # Development
 
