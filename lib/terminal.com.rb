@@ -299,7 +299,9 @@ Network error (#{original_error.class}): #{original_error.message}
   #   Has to be one of the available {https://www.terminal.com/faq#instanceTypes instance types}
   #   and corresponding `:cpu` option has to be provided.
   #   This option is required.
-  # @option options :diskspace [String] How much diskspace is required. If you want to set to more than 20 GB, you need 25 MB of ram per GB.
+  # @option options :diskspace [String] How much diskspace is required.
+  #   If you want to set to more than 20 GB, you need 25 MB of ram per GB.
+  #   This option is required.
   # @option options :name [String] Terminal name.
   # @return (see .get_snapshot)
   # @raise (see .start_snapshot)
@@ -312,7 +314,8 @@ Network error (#{original_error.class}): #{original_error.message}
   # @see https://www.terminal.com/api/docs#edit-terminal Terminal.com API docs
   # @see https://www.terminal.com/faq#instanceTypes Terminal Instance types
   def self.edit_terminal(user_token, access_token, container_key, **options)
-    ensure_both_cpu_and_ram_are_provided(options, required: true)
+    ensure_both_cpu_and_ram_are_provided(options)
+    ensure_options_present(options, :cpu, :ram, :diskspace)
 
     ensure_options_validity(options,
       :cpu, :ram, :diskspace, :name)
@@ -687,13 +690,14 @@ Network error (#{original_error.class}): #{original_error.message}
   # If a instance is stopped, price will be zero.
   #
   # @param instance_type [String] desc.
-  # @param status [String] Defaults to `running`.
+  # @param status [String] Defaults to `running`. It doesn't make
+  #   sense to set it to anything else: pause instances are not billed.
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   #
   # @example
   #   Terminal.instance_price('micro')
-  #   # TODO
+  #   # {"price" => 0.006, "units" => "dollars per hour"}
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#instance-price Terminal.com API docs
@@ -1000,9 +1004,17 @@ curl -L -X POST -H '#{headers}' -d '#{json}' https://api.terminal.com#{path}
   end
 
   # @api private
-  def self.ensure_both_cpu_and_ram_are_provided(options, meta_options = Hash.new)
-    if (options[:cpu] && ! options[:ram]) || (options[:ram] && ! options[:cpu]) || (meta_options[:required] && ! options[:cpu])
+  def self.ensure_both_cpu_and_ram_are_provided(options)
+    if (options[:cpu] && ! options[:ram]) || (options[:ram] && ! options[:cpu])
       raise ArgumentError.new('You have to specify both cpu and ram of the corresponding instance type as described at https://www.terminal.com/faq#instanceTypes')
+    end
+  end
+
+  def self.ensure_options_present(options, *required_keys)
+    required_keys.each do |key|
+      unless options.has_key?(key)
+        raise ArgumentError.new("Option #{key} is required, but is missing.")
+      end
     end
   end
 
