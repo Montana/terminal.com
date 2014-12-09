@@ -14,7 +14,8 @@ end
 def dbg(command, arguments, **options)
   log "Terminal.#{command}(" +
     ("#{arguments.inspect[1..-2]}" unless arguments.empty?).to_s +
-    (", #{options.inspect[1..-2]}" unless options.empty?).to_s +
+    (", " if ! arguments.empty? && ! options.empty?).to_s +
+    ("#{options.inspect[1..-2]}" unless options.empty?).to_s +
     ")\n"
 end
 
