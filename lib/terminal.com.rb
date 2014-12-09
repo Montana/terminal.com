@@ -186,7 +186,7 @@ Network error (#{original_error.class}): #{original_error.message}
   # Start a Terminal instance based on a snapshot.
   #
   # @param (see .list_terminals)
-  # @param snapshot_id [String] Snapshot ID (the last part of the snapshot URL).
+  # @param snapshot_id (see .get_snapshot)
   # @param options [Hash] Configuration of the new Terminal.
   # @option options :cpu [String] How much CPU is required.
   #   Has to be one of the available {https://www.terminal.com/faq#instanceTypes instance types}
@@ -331,27 +331,19 @@ Network error (#{original_error.class}): #{original_error.message}
   #
   # @param (see .list_terminals)
   # @param options [Hash] Filtering and pagination options.
-  # TODO: options see?
-  # @option options :username [String] Any valid username (i. e. `botanicus`).
-  # @option options :tag [String] Any tag (i. e. `ubuntu`).
-  # @option options :featured [Boolean] Search only for featured (or non-featured).
-  # @option options :title [String] Title to be *matched* against the existing snapshots.
-  # @option options :page [String] Use with `perPage` for pagination.
-  # @option options :perPage [String] Use with `page` for pagination.
-  # @option options :sortby [String] Either `popularity` or `date`. TODO: Does it have this one?
+  # @option options (see .list_public_snapshots)
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   #
-  # TODO: Redo examples.
-  # @example Return all the public snapshots.
-  #   Terminal.list_public_snapshots
+  # @example Return all the snapshots owned by your account.
+  #   Terminal.list_snapshots
   #   # {"snapshots" => [{"title" => "Decision Tree", "tags" => "python,ipython", ...}, {...}]}
   #
-  # @example Return all the featured snapshots from user botanicus.
-  #   Terminal.list_public_snapshots(username: 'botanicus', featured: true)
+  # @example Return all the featured snapshots owned by your account from user botanicus.
+  #   Terminal.list_snapshots(username: 'botanicus', featured: true)
   #
   # @example Return the first page of the search results with 10 items per page, sorted by date.
-  #   Terminal.list_public_snapshots(tag: 'ubuntu', page: 1, perPage: 10, sortby: 'date')
+  #   Terminal.list_snapshots(tag: 'ubuntu', page: 1, perPage: 10, sortby: 'date')
 
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#list-snapshots Terminal.com API docs
@@ -374,7 +366,6 @@ Network error (#{original_error.class}): #{original_error.message}
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   #
-  # TODO: Rework the examples.
   # @example Number of all the public snapshots.
   #   Terminal.count_public_snapshots
   #   # {"snapshot_count" => 474}
@@ -397,7 +388,7 @@ Network error (#{original_error.class}): #{original_error.message}
   # Delete a snapshot from your account. This cannot be undone.
   #
   # @param (see .list_terminals)
-  # @param snapshot_id [String] Snapshot ID (the last part of the snapshot URL).
+  # @param snapshot_id (see .get_snapshot)
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   #
@@ -419,7 +410,8 @@ Network error (#{original_error.class}): #{original_error.message}
   # @option options :readme [String] The README.
   # @option options :tags [String] Comma-separated list of tags (i. e. `ubuntu,ruby`).
   # @option options :public [Boolean] Whether the snapshot will be accessible by other users.
-  # @option options :custom_data [String] TODO.
+  # @option options :custom_data [String] Metadata of your Terminal. Anything you need.
+  #   It will be accessible through {.get_terminal}, but not from within the Terminal itself.
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   #
@@ -459,6 +451,9 @@ Network error (#{original_error.class}): #{original_error.message}
   # Add to the list of your other Terminals who have access
   # to one of your Terminal instances.
   #
+  # Currently this feature doesn't have GUI, so don't be surprised
+  # if you haven't come across it yet.
+  #
   # @param (see .delete_terminal)
   # @param links [Array<Hash>] Links are hashes with keys `port` and `source`.
   # @return (see .get_snapshot)
@@ -466,7 +461,6 @@ Network error (#{original_error.class}): #{original_error.message}
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#add-terminal-links Terminal.com API docs
-  # TODO: What is this for?
   def self.add_terminal_links(user_token, access_token, container_key, *links)
     call('/add_terminal_links',
       user_token: user_token,
@@ -484,8 +478,6 @@ Network error (#{original_error.class}): #{original_error.message}
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#remove-terminal-links Terminal.com API docs
-  # @see TODO FAQ
-  # TODO: What is this for?
   def self.remove_terminal_links(user_token, access_token, container_key, *links)
     call('/remove_terminal_links',
       user_token: user_token,
@@ -561,6 +553,11 @@ Network error (#{original_error.class}): #{original_error.message}
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   #
+  # @example Claim a subdomain of Terminal.com
+  #   # TODO
+  #
+  # @example Use your own domain
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#add-domain-to-pool Terminal.com API docs
   # @see https://www.terminal.com/faq#cname Terminal.com FAQ: Using my own domains for my Terminals?
@@ -626,7 +623,7 @@ Network error (#{original_error.class}): #{original_error.message}
   # @!endgroup
   # @!group MANAGE TERMINAL IDLE SETTINGS
 
-  # Set the idle settings for your Terminal.
+  # Set the {https://www.terminal.com/faq#idleSettings idle settings} for your Terminal.
   #
   # @param (see .delete_terminal)
   # @param action [String] desc.
@@ -646,7 +643,7 @@ Network error (#{original_error.class}): #{original_error.message}
       triggers: triggers)
   end
 
-  # Get the idle settings for your terminal.
+  # Get the {https://www.terminal.com/faq#idleSettings idle settings} for your terminal.
   #
   # @param (see .delete_terminal)
   # @return (see .get_snapshot)
@@ -667,16 +664,16 @@ Network error (#{original_error.class}): #{original_error.message}
 
   # Get a list of the types of Terminals that may be started,
   # and the specifications for each type (CPU, RAM, and pricing).
-  # This endpoint does not require authentication.
   #
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   #
-  # @since 0.0.1
-  # @see https://www.terminal.com/api/docs#instance-types Terminal.com API docs
   # @example
   #   Terminal.instance_types
   #   # TODO
+  #
+  # @since 0.0.1
+  # @see https://www.terminal.com/api/docs#instance-types Terminal.com API docs
   def self.instance_types
     call('/instance_types', Hash.new)
   end
@@ -690,7 +687,7 @@ Network error (#{original_error.class}): #{original_error.message}
   # @raise (see .get_snapshot)
   #
   # @example
-  #   Terminal.instance_types
+  #   Terminal.instance_price('micro')
   #   # TODO
   #
   # @since 0.0.1
@@ -706,7 +703,7 @@ Network error (#{original_error.class}): #{original_error.message}
   # @raise (see .get_snapshot)
   #
   # @example
-  #   Terminal.instance_types
+  #   Terminal.balance(user_token, access_token)
   #   # TODO
   #
   # @since 0.0.1
@@ -722,7 +719,7 @@ Network error (#{original_error.class}): #{original_error.message}
   # @raise (see .get_snapshot)
   #
   # @example
-  #   Terminal.instance_types
+  #   Terminal.balance_added(user_token, access_token)
   #   # TODO
   #
   # @since 0.0.1
@@ -758,7 +755,7 @@ Network error (#{original_error.class}): #{original_error.message}
   # @raise (see .get_snapshot)
   #
   # @example
-  #   Terminal.instance_types
+  #   Terminal.burn_history(user_token, access_token)
   #   # TODO
   #
   # @since 0.0.1
@@ -774,7 +771,7 @@ Network error (#{original_error.class}): #{original_error.message}
   # @raise (see .get_snapshot)
   #
   # @example
-  #   Terminal.instance_types
+  #   Terminal.terminal_usage_history(user_token, access_token)
   #   # TODO
   #
   # @since 0.0.1
@@ -790,7 +787,7 @@ Network error (#{original_error.class}): #{original_error.message}
   # @raise (see .get_snapshot)
   #
   # @example
-  #   Terminal.instance_types
+  #   Terminal.burn_state(user_token, access_token)
   #   # TODO
   #
   # @since 0.0.1
@@ -808,7 +805,7 @@ Network error (#{original_error.class}): #{original_error.message}
   # @raise (see .get_snapshot)
   #
   # @example
-  #   Terminal.instance_types
+  #   Terminal.burn_estimates(user_token, access_token)
   #   # TODO
   #
   # @since 0.0.1
@@ -829,6 +826,7 @@ Network error (#{original_error.class}): #{original_error.message}
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#add-authorized-key-to-terminal Terminal.com API docs
+  # @see https://www.terminal.com/faq#ssh Using SSH to connect to your Terminals
   def self.add_authorized_key_to_terminal(user_token, access_token, container_key, publicKey)
     call('/add_authorized_key_to_terminal',
       user_token: user_token,
@@ -847,6 +845,7 @@ Network error (#{original_error.class}): #{original_error.message}
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#add-authorized-key-to-ssh-proxy Terminal.com API docs
+  # @see https://www.terminal.com/faq#ssh Using SSH to connect to your Terminals
   def self.add_authorized_key_to_ssh_proxy(user_token, access_token, name, publicKey)
     call('/add_authorized_key_to_ssh_proxy',
       user_token: user_token,
@@ -865,6 +864,7 @@ Network error (#{original_error.class}): #{original_error.message}
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#del-authorized-key-from-ssh-proxy Terminal.com API docs
+  # @see https://www.terminal.com/faq#ssh Using SSH to connect to your Terminals
   def self.del_authorized_key_from_ssh_proxy(user_token, access_token, name, fingerprint)
     call('/del_authorized_key_from_ssh_proxy',
       user_token: user_token,
@@ -881,6 +881,7 @@ Network error (#{original_error.class}): #{original_error.message}
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#get-authorized-keys-from-ssh-proxy Terminal.com API docs
+  # @see https://www.terminal.com/faq#ssh Using SSH to connect to your Terminals
   def self.get_authorized_keys_from_ssh_proxy(user_token, access_token)
     call('/get_authorized_keys_from_ssh_proxy',
       user_token: user_token, access_token: access_token)
@@ -897,7 +898,7 @@ Network error (#{original_error.class}): #{original_error.message}
   # @raise (see .get_snapshot)
   #
   # @example
-  #   Terminal.who_am_i
+  #   Terminal.who_am_i(user_token, access_token)
   #   # TODO
   #
   # @since 0.0.1
@@ -973,6 +974,7 @@ curl -L -X POST -H '#{headers}' -d '#{json}' https://api.terminal.com#{path}
   # Also, JSON document doesn't have to be an object, but in Terminal.com API,
   # they all are.
   # @api private
+  # TODO: Test it.
   def self.convert_timestamps_to_time(hash)
     hash.each do |key, value|
       if value.is_a?(Hash)
