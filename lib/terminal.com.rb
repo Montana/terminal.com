@@ -502,6 +502,12 @@ Network error (#{original_error.class}): #{original_error.message}
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   #
+  # @example
+  #   Terminal.list_terminal_access(user_token, access_token, "268b0082-c96c-4c74-bf0a-a5d6d4c16b01")
+  #   # {"is_public_list" => ["80", "3000"],
+  #   #  "access_rules" => ["3000::*@cloudlabs.io", "*::james@101ideas.cz", "IDE::james@101ideas.cz", "IDE::terminal@cloudlabs.io"],
+  #   #  "links"=>["3000::botanicus117"]}
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#list-terminal-access Terminal.com API docs
   # @see https://www.terminal.com/faq#terminalAccess Terminal.com FAQ: Terminal access
@@ -550,6 +556,10 @@ Network error (#{original_error.class}): #{original_error.message}
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   #
+  # @example
+  #   Terminal.get_cname_records(user_token, access_token)
+  #   # {"available" => ["101ideas.cz", "terminal.101ideas.cz"]], "assigned": []}
+  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#get-cname-records Terminal.com API docs
   # @see https://www.terminal.com/faq#cname Terminal.com FAQ: Using my own domains for my Terminals?
@@ -566,11 +576,6 @@ Network error (#{original_error.class}): #{original_error.message}
   # @param domain [String] A domain (i. e. `101ideas.cz`).
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
-  #
-  # @example Claim a subdomain of Terminal.com
-  #   # TODO
-  #
-  # @example Use your own domain
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#add-domain-to-pool Terminal.com API docs
@@ -599,10 +604,16 @@ Network error (#{original_error.class}): #{original_error.message}
   # Terminal instances, making it accessible via that domain.
   #
   # @param (see .add_domain_to_pool)
-  # @param subdomain [String] TODO.
-  # @param port [String] TODO.
+  # @param subdomain [String] Subdomain of the Terminal you want the domain assigned to.
+  # @param port [String] Which port on the Terminal should it point to?
+  #   This will typically be either `80` if you're using Apache or Nginx
+  #   or any other number if you're using say Thin or Puma.
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
+  #
+  # @example
+  #   Terminal.add_cname_record(user_token, access_token, 'terminal.101ideas.cz', 'botanicus117', 3000)
+  #   # {"available" => [...], "assigned" => [{"domain" => "terminal.101ideas.cz", "subdomain" => "botanicus117", "port" => "3000"}]}
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#add-cname-record Terminal.com API docs
