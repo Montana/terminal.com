@@ -651,15 +651,20 @@ Network error (#{original_error.class}): #{original_error.message}
   # Set the {https://www.terminal.com/faq#idleSettings idle settings} for your Terminal.
   #
   # @param (see .delete_terminal)
-  # @param action [String] desc.
-  # @param triggers [Array<String>] desc.
+  # @param action [String] Either `downgrade` or `pause`.
+  # @param triggers [Hash<Hash>] Keys can be `cpu_load` or `last_request`.
+  #   Keys of those can be `timeout` and `last_request`
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
+  #
+  # @example
+  #   Terminal.set_terminal_idle_settings(user_token, access_token, 'b878c064-fc2b-4f14-81fa-ca10ac9385ff', 'pause', cpu_load: {timeout: 5600})
+  #   # {"success" => true}
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#set-terminal-idle-settings Terminal.com API docs
   # @see https://www.terminal.com/faq#idleSettings Terminal.com FAQ: Idle settings
-  def self.set_terminal_idle_settings(user_token, access_token, container_key, action, *triggers)
+  def self.set_terminal_idle_settings(user_token, access_token, container_key, action, triggers)
     call('/set_terminal_idle_settings',
       user_token: user_token,
       access_token: access_token,
@@ -673,6 +678,24 @@ Network error (#{original_error.class}): #{original_error.message}
   # @param (see .delete_terminal)
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
+  #
+  # @example
+  #   container_key = 'b878c064-fc2b-4f14-81fa-ca10ac9385ff'
+  #   Terminal.get_terminal_idle_settings(user_token, access_token, container_key)
+  #   # {"success": true,
+  #   #  "settings": {
+  #   #    "action": "pause",
+  #   #    "triggers": {
+  #   #      "cpu_load": {
+  #   #        "timeout": 3600,
+  #   #        "threshold": 10
+  #   #      },
+  #   #      "last_request": {
+  #   #        "timeout": 3600
+  #   #      }
+  #   #    }
+  #   #  }
+  #   # }
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#get-terminal-idle-settings Terminal.com API docs
@@ -695,7 +718,15 @@ Network error (#{original_error.class}): #{original_error.message}
   #
   # @example
   #   Terminal.instance_types
-  #   # TODO
+  #   # {"instance_types" => {
+  #   #   "micro" => {"cpu" => "2 (max)", "ram" => 256, "price" => 0.006},
+  #   #   "mini" => {"cpu" => 50, "ram" => 800, "price" => 0.031},
+  #   #   "small" => {"cpu" => 100, "ram" => 1600, "price" => 0.062},
+  #   #   "medium" => {"cpu" => 200, "ram" => 3200, "price" => 0.124},
+  #   #   "xlarge" => {"cpu" => 400, "ram" => 6400, "price" => 0.248},
+  #   #   "2xlarge" => {"cpu" => 800, "ram" => 12800, "price" => 0.496},
+  #   #   "4xlarge" => {"cpu" => 1600, "ram" => 25600, "price" => 0.992},
+  #   #   "8xlarge" => {"cpu" => 3200, "ram" => 51200, "price" => 1.984}}}
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#instance-types Terminal.com API docs
@@ -730,7 +761,7 @@ Network error (#{original_error.class}): #{original_error.message}
   #
   # @example
   #   Terminal.balance(user_token, access_token)
-  #   # TODO
+  #   # {"balance" => 675.879}
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#balance Terminal.com API docs
@@ -746,7 +777,7 @@ Network error (#{original_error.class}): #{original_error.message}
   #
   # @example
   #   Terminal.balance_added(user_token, access_token)
-  #   # TODO
+  #   # {"events" => [{"reason" => "Terminal.com sign up gift!", "amount" => 5, "time" => 1411652507924}], "total" => 5}
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#balance-added Terminal.com API docs
@@ -759,8 +790,8 @@ Network error (#{original_error.class}): #{original_error.message}
   # previously purchased credits.
   #
   # @param (see .list_terminals)
-  # @param email [String] desc.
-  # @param cents [String] desc.
+  # @param email [String] User email.
+  # @param cents [String] US cents.
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   #
@@ -780,10 +811,6 @@ Network error (#{original_error.class}): #{original_error.message}
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   #
-  # @example
-  #   Terminal.burn_history(user_token, access_token)
-  #   # TODO
-  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#burn-history Terminal.com API docs
   def self.burn_history(user_token, access_token)
@@ -796,10 +823,6 @@ Network error (#{original_error.class}): #{original_error.message}
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   #
-  # @example
-  #   Terminal.terminal_usage_history(user_token, access_token)
-  #   # TODO
-  #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#terminal-usage-history Terminal.com API docs
   def self.terminal_usage_history(user_token, access_token)
@@ -811,10 +834,6 @@ Network error (#{original_error.class}): #{original_error.message}
   # @param (see .list_terminals)
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
-  #
-  # @example
-  #   Terminal.burn_state(user_token, access_token)
-  #   # TODO
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#burn-state Terminal.com API docs
@@ -829,10 +848,6 @@ Network error (#{original_error.class}): #{original_error.message}
   # @param (see .list_terminals)
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
-  #
-  # @example
-  #   Terminal.burn_estimates(user_token, access_token)
-  #   # TODO
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#burn-estimates Terminal.com API docs
@@ -925,7 +940,19 @@ Network error (#{original_error.class}): #{original_error.message}
   #
   # @example
   #   Terminal.who_am_i(user_token, access_token)
-  #   # TODO
+  #   # {
+  #   #   "user": {
+  #   #     "name": "James C Russell",
+  #   #     "username": "botanicus",
+  #   #     "url": "https://twitter.com/botanicus",
+  #   #     "company": "",
+  #   #     "location": "London, United Kingdom",
+  #   #     "balance": 675.879,
+  #   #     "email": "james@101ideas.cz",
+  #   #     "is_admin": false,
+  #   #     "profile_image": "//www.gravatar.com/avatar/74c419a50563fa9e5044820c2697ffd6.jpg?s=400&d=mm"
+  #   #   }
+  #   # }
   #
   # @since 0.0.1
   # @see https://www.terminal.com/api/docs#who-am-i Terminal.com API docs
