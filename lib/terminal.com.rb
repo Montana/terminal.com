@@ -508,8 +508,13 @@ Network error (#{original_error.class}): #{original_error.message}
   #
   # @param (see .delete_terminal)
   # @param options [Hash] Access rules.
-  # @option options :is_public_list [TODO] TODO
-  # @option options :access_rules [TODO] TODO
+  # @option options :is_public_list [Array] List of open ports.
+  #   Port `80` is open by default, you can add additional ports.
+  # @option options :access_rules [Array] Array of access rules.
+  #   An access rule is `<port>::<email>`. Port can be a port number,
+  #   `IDE` or an asterisk and email can contain asterisks.
+  #   **Examples:** `"3000::*@cloudlabs.io"`, `"*::james@101ideas.cz",
+  #   `"IDE::james@101ideas.cz"`.
   # @return (see .get_snapshot)
   # @raise (see .get_snapshot)
   #
