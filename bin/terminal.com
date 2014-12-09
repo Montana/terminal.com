@@ -156,5 +156,9 @@ else
   arguments << access_token if method_args.include?(:access_token)
   arguments.push(*ARGV)
 
-  api_call(command, arguments, options)
+  begin
+    api_call(command, arguments, options)
+  rescue Terminal::NetworkError
+    abort "It seems that you're offline."
+  end
 end
