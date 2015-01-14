@@ -11,7 +11,7 @@ require 'time'
 module Terminal
 
   # The gem version.
-  VERSION = '0.0.3'
+  VERSION = '0.0.4'
 
   # The Terminal.com API version.
   API_VERSION = 'v0.1'
