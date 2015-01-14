@@ -929,6 +929,61 @@ Network error (#{original_error.class}): #{original_error.message}
   end
 
   # @!endgroup
+  # @!group TERMINAL PASSWORDS
+
+  # Assign login/password to a Terminal/port combination.
+  #
+  # @param (see .remove_terminal_password)
+  # @param password [String] An arbitrary password.
+  # @param port [String] A number, 'IDE' or '*'.
+  # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
+  # @since 0.0.4
+  # @see TODO: So far this is undocumented.
+  def self.add_terminal_password(user_token, access_token, container_key, name, password, port)
+    call('/add_terminal_password',
+      user_token: user_token,
+      access_token: access_token,
+      container_key: container_key,
+      name: name,
+      password: password,
+      port: port)
+  end
+
+  # List all the assigned Terminal logins and the ports they are assigned to.
+  #
+  # @param (see .delete_terminal)
+  # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
+  # @since 0.0.4
+  # @see TODO: So far this is undocumented.
+  def self.list_terminal_passwords(user_token, access_token, container_key)
+    call('/list_terminal_passwords',
+      user_token: user_token,
+      access_token: access_token,
+      container_key: container_key)
+  end
+
+  # Remove given login/password from a Terminal.
+  #
+  # @param (see .delete_terminal)
+  # @param name [String] An arbitrary identifier.
+  # @return (see .get_snapshot)
+  # @raise (see .get_snapshot)
+  #
+  # @since 0.0.4
+  # @see TODO: So far this is undocumented.
+  def self.remove_terminal_password(user_token, access_token, container_key, name)
+    call('/remove_terminal_password',
+      user_token: user_token,
+      access_token: access_token,
+      container_key: container_key,
+      name: name)
+  end
+
+  # @!endgroup
   # @!group OTHER
 
   # Get information about yourself!  If invalid access/user token
