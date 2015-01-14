@@ -191,6 +191,25 @@ module Terminal
       Terminal.get_authorized_key_from_ssh_proxy(@user_token, @access_token)
     end
 
+    ######################
+    # TERMINAL PASSWORDS #
+    ######################
+
+    # @since 0.0.4
+    def add_terminal_password(container_key, name, password, port)
+      Terminal.add_terminal_password(@user_token, @access_token, container_key, name, password, port)
+    end
+
+    # @since 0.0.4
+    def list_terminal_passwords(container_key)
+      Terminal.list_terminal_passwords(@user_token, @access_token, container_key)
+    end
+
+    # @since 0.0.4
+    def remove_terminal_password(container_key, name)
+      Terminal.remove_terminal_password(@user_token, @access_token, container_key, name)
+    end
+
     #########
     # OTHER #
     #########
