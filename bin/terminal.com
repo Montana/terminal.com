@@ -47,11 +47,11 @@ end
 def usage
   if File.exist?(File.expand_path('../docs/help.txt', __dir__))
     # Running locally.
-    puts File.read(File.expand_path('../docs/help.txt', __dir__))
+    File.read(File.expand_path('../docs/help.txt', __dir__))
   else
     # RubyGems installation.
     spec = Gem::Specification.find_by_name('terminal.com')
-    puts File.read(File.join(spec.gem_dir, 'docs', 'help.txt'))
+    File.read(File.join(spec.gem_dir, 'docs', 'help.txt'))
   end
 end
 
